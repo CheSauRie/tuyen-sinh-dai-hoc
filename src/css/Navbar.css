@@ -1,0 +1,58 @@
+/* Navbar.css */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 0.5rem 1rem;
+}
+
+.nav-logo {
+    width: 50px;
+    height: 50px; /* hoặc kích thước phù hợp với logo của bạn */
+}
+
+.nav-title {
+    margin-left: -400px;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.auth-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.auth-links button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.auth-links button:hover {
+    background-color: #0056b3;
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.logout-button svg {
+    width: 24px; /* Điều chỉnh kích thước icon nếu cần */
+    height: auto;
+}

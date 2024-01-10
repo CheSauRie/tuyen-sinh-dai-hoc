@@ -1,0 +1,33 @@
+/* DangNhap.css */
+.dang-nhap-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.dang-nhap-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.dang-nhap-container input {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.dang-nhap-container button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.dang-nhap-container button:hover {
+    background-color: #0056b3;
+}

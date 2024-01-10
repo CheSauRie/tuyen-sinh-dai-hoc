@@ -1,0 +1,117 @@
+/* DiemThi.css */
+.diem-thi-container {
+    padding: 1rem;
+}
+
+.diem-thi-container h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.search-box {
+    display: inline-block;
+    width: 50%; /* Giảm kích thước của thanh tìm kiếm */
+    padding: 0.5rem;
+    margin-right: 10px; /* Thêm một chút khoảng cách giữa thanh tìm kiếm và nút */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.search-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.province-buttons {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.province-buttons button {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.province-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.dropdown-provinces {
+    text-align: center;
+    background-color: #f1f1f1;
+    padding: 1rem;
+    border: 1px solid #ddd;
+}
+
+.university-list-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.university-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 35%;
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.university-code {
+    /* flex-basis: 30%; */
+    padding-right: 10px; /* Khoảng cách giữa mã trường và tên trường */
+    text-align: left;
+}
+
+.university-name {
+    flex-basis: 70%;
+    text-align: left; /* Căn chỉnh tên trường sang trái */
+}
+
+/* DiemThi.css */
+/* Các định dạng CSS khác giữ nguyên */
+
+.load-more {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.load-more:hover {
+    background-color: #0056b3;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    margin-top: 20px;
+}

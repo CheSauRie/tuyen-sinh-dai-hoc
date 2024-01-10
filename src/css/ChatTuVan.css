@@ -1,0 +1,34 @@
+/* ChatTuVan.css */
+.chat-tuvan-container {
+    display: flex;
+    position: relative;
+    height: 600px;
+}
+
+.chat-summary,
+.chat-window,
+.question-history {
+    border: 1px solid #ddd;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat-summary {
+    flex-basis: 20%;
+}
+
+.chat-window {
+    flex-basis: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-input {
+    margin-top: auto;
+    display: flex;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    margin-right: 10px;
+}

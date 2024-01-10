@@ -1,0 +1,311 @@
+/* TuyenSinhDetail.css */
+.university-detail-page {
+    /* Các định dạng cơ bản cho trang */
+    box-sizing: border-box;
+}
+
+.cover-image {
+    width: 100%;
+    height: 300px; /* Hoặc chiều cao tùy chỉnh */
+    background-size: cover;
+    /* background-position: center; */
+}
+
+/* TuyenSinhDetail.css */
+.container-fluid {
+    display: flex;
+    height: 112px;
+    align-items: center;
+    padding: 20px 200px;
+}
+
+.university-logo-tuyensinh {
+    border: 1px solid #ececec;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.university-logo-tuyensinh img {
+    width: 100%; /* Đảm bảo logo chiếm toàn bộ chiều rộng của container logo */
+}
+
+.university-info-tuyensinh {
+    flex-basis: 80%; /* Phần còn lại cho thông tin trường */
+}
+
+.university-info-tuyensinh h2 {
+    margin-top: 0;
+}
+
+.statistics-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.statistic-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+.stat-circle {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.number {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.label {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Thêm các định dạng khác nếu cần */
+
+/* Định dạng cho các hình tròn trong statistics */
+
+.majors-list-container {
+    padding: 20px;
+}
+
+.major-item {
+    border-bottom: 1px solid #ddd; /* Tạo đường kẻ phân cách */
+    margin: 10px 150px;
+}
+
+.major-item h4 {
+    margin: 10px 0;
+}
+
+.major-item p {
+    margin: 5px 0;
+    line-height: 1.6;
+    margin-left: 20px;
+}
+
+.icon {
+    margin-right: 5px;
+    /* Thêm CSS cho icon nếu bạn sử dụng hình ảnh hoặc font icon */
+}
+
+.icon-container {
+    display: inline-flex;
+}
+.majors-list-title {
+    padding: 0px 120px;
+}
+
+.major-name {
+    cursor: pointer;
+}
+
+/* introduction */
+.introduction-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.introduction-section h3 {
+    margin-bottom: 20px;
+}
+
+.info-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.info-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 30%; /* Điều chỉnh theo nhu cầu */
+    cursor: pointer;
+}
+
+.card-icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    margin: 0 auto 10px;
+    font-size: 24px;
+}
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%; /* Điều chỉnh theo nhu cầu */
+}
+
+.close-button {
+    float: right;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.user-reviews {
+    padding: 20px;
+    background-color: #f8f8f8; /* Màu nền cho phần đánh giá */
+    border-top: 1px solid #ddd; /* Phân cách phần đánh giá */
+}
+
+.user-reviews-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #fff; /* Màu nền cho mỗi đánh giá */
+    border: 1px solid #eee; /* Viền cho mỗi đánh giá */
+    border-radius: 5px; /* Bo tròn góc */
+}
+
+.review-item strong {
+    display: block; /* Hiển thị tên người dùng trên một dòng riêng */
+}
+
+.registration-section {
+    display: flex;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f8f8;
+}
+
+.registration-section .university-image {
+    flex-basis: 50%;
+    padding-right: 20px;
+    height: 320px;
+}
+
+.registration-section .university-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.registration-form {
+    flex-basis: 50%;
+}
+
+.registration-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.registration-form input,
+.registration-form select,
+.registration-form textarea {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.registration-form button {
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.review-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Đảm bảo modal ở trên cùng */
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%; /* Điều chỉnh theo nhu cầu */
+}
+.close-modal {
+    float: right;
+    font-size: 30px;
+    cursor: pointer;
+}
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content form select,
+.modal-content form textarea,
+.modal-content form button {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.modal-content form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-content form button:hover {
+    background-color: #218838;
+}
+
+.user-reviews button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-reviews button:hover {
+    background-color: #0056b3;
+}

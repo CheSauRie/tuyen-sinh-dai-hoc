@@ -1,0 +1,48 @@
+/* MajorDetail.css */
+.major-detail-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 220px; /* Cách cạnh trái màn hình */
+    background-color: antiquewhite;
+}
+
+.row {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.row.header {
+    align-items: center;
+    background-color: whitesmoke;
+    padding: 0 20px;
+}
+
+.row.content {
+    background-color: white;
+}
+.logo {
+    flex-basis: 100px; /* Điều chỉnh kích thước logo */
+    padding-right: 10px; /* Khoảng cách giữa logo và thông tin */
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+}
+
+.name-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.major-details {
+    flex-grow: 2; /* Chiếm nhiều không gian hơn */
+    padding: 20px;
+    border-right: 1px solid black;
+}
+
+.other-majors {
+    flex-grow: 1; /* Chiếm ít không gian hơn */
+    padding: 20px;
+}

@@ -1,0 +1,108 @@
+/* TruongDaiHoc.css */
+.university-page-container {
+    padding: 20px;
+}
+
+.university-page-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-and-filter {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.filter-dropdown {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-left: 10px; /* Khoảng cách giữa các thành phần lọc */
+}
+
+.university-list {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.university-card {
+    width: 364px; /* Đặt chiều rộng cố định */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex; /* Sử dụng flex để căn chỉnh nội dung bên trong card */
+    flex-direction: column; /* Sắp xếp nội dung theo chiều dọc */
+    align-items: center; /* Căn giữa các item theo chiều ngang */
+    justify-content: center; /* Căn giữa các item theo chiều dọc */
+    padding: 15px;
+}
+
+.university-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.university-info {
+    padding: 15px;
+}
+
+.university-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.follow-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.follow-button:hover {
+    background-color: #218838;
+}
+
+/* Thêm các định dạng khác tùy ý */
+
+@media (max-width: 768px) {
+    .university-card {
+        flex-basis: calc(50% - 20px); /* 2 card trên một hàng cho màn hình nhỏ hơn */
+    }
+}
+
+@media (max-width: 480px) {
+    .university-card {
+        flex-basis: 100%; /* Chỉ 1 card trên một hàng cho màn hình rất nhỏ */
+    }
+}

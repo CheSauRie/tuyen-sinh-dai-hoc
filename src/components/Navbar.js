@@ -35,7 +35,8 @@ const Navbar = () => {
     };
 
     const handleRegisterClick = () => {
-        navigate('/dang-ky'); // Chuyển hướng tới trang đăng ký
+        const currentPath = window.location.pathname;
+        navigate('/dang-ky', { state: { from: currentPath } }); // Chuyển hướng tới trang đăng ký
     };
 
     const handleLogout = () => {
@@ -49,7 +50,7 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <img src={LOGO} alt="Logo" className="nav-logo" />
-            <h1 className='nav-title'>Tư vấn tuyển sinh</h1>
+            {/* <h1 className='nav-title'>Tư vấn tuyển sinh</h1> */}
             <ul className="nav-links">
                 <li><Link to="/diem-thi">Xem Điểm Thi</Link></li>
                 <li><Link to="/truong-dai-hoc">Xem Trường Đại Học</Link></li>

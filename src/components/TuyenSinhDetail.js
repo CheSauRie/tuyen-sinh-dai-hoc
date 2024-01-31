@@ -71,7 +71,17 @@ const TuyenSinhDetail = () => {
         navigate(`/truong-dai-hoc/${name}/chi-tiet-nganh/${major.name}`)
     }
 
-    const openReviewModal = () => setShowReviewModal(true);
+    const openReviewModal = () => {
+        // Kiểm tra trạng thái đăng nhập
+        const isLoggedIn = localStorage.getItem('token'); // Giả sử token được lưu khi đăng nhập
+        console.log(isLoggedIn);
+        if (isLoggedIn) {
+            setShowReviewModal(true);
+        } else {
+            alert("Bạn cần đăng nhập để đánh giá."); // Hoặc sử dụng một phương pháp thông báo khác
+            navigate('/dang-nhap'); // Chuyển hướng đến trang đăng nhập
+        }
+    }
     const closeReviewModal = () => setShowReviewModal(false);
     return (
         <div className="university-detail-page">

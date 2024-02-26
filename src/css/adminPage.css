@@ -1,0 +1,51 @@
+.admin-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-container h3 {
+    margin-top: 20px;
+    color: #333;
+}
+
+.admin-container input[type="text"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Added */
+}
+
+input[type="file"] {
+    background: #ffffff;
+}
+
+.admin-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.admin-container button:hover {
+    background-color: #0056b3;
+}
+
+.md-editor {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.md-editor .editor-container .input {
+    min-height: 150px; /* Adjust the min-height of markdown editor content area */
+}

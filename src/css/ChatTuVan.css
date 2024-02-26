@@ -3,34 +3,62 @@
     display: flex;
     position: relative;
     height: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm shadow cho toàn bộ container */
+    background: #fff; /* Màu nền cho container */
+    border-radius: 8px; /* Bo tròn góc */
 }
 
 .chat-summary,
 .chat-window,
 .question-history {
-    border: 1px solid #ddd;
-    padding: 10px;
+    border-right: 1px solid #eee; /* Màu border nhẹ nhàng */
+    padding: 20px; /* Thêm padding */
     overflow-y: auto;
 }
-
+.question-history {
+    flex-basis: 200px; /* Đặt kích thước cố định cho cột bên phải */
+    width: 200px; /* Cũng có thể sử dụng width thay vì flex-basis */
+    overflow-y: auto;
+    padding: 20px;
+}
 .chat-summary {
     flex-basis: 20%;
 }
 
 .chat-window {
-    flex-basis: 60%;
+    flex-basis: 60%; /* Điều chỉnh tỉ lệ */
     display: flex;
     flex-direction: column;
+    border-right: none; /* Không cần border phải */
 }
 
 .chat-input {
     margin-top: auto;
     display: flex;
+    padding: 10px 0; /* Thêm padding cho phần nhập */
 }
 
 .chat-input input {
     flex-grow: 1;
     margin-right: 10px;
+    padding: 10px; /* Thêm padding */
+    border: 1px solid #ccc; /* Thêm border */
+    border-radius: 4px; /* Bo tròn góc */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Thêm shadow bên trong */
+}
+
+.chat-input button {
+    padding: 10px 15px; /* Thêm padding */
+    background-color: #28a745; /* Màu nền xanh lá */
+    color: white; /* Màu chữ */
+    border: none; /* Xóa border */
+    border-radius: 4px; /* Bo tròn góc */
+    cursor: pointer; /* Con trỏ chuột */
+    transition: background-color 0.2s; /* Hiệu ứng chuyển màu */
+}
+
+.chat-input button:hover {
+    background-color: #218838; /* Màu nền khi hover */
 }
 
 .chat-messages {
@@ -44,25 +72,79 @@
     line-height: 1.5;
 }
 
-.loading-animation {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
+/* ...giữ nguyên phần loading-animation và @keyframes ellipsis... */
+
+.add-chat-btn {
+    display: block; /* Để button chiếm toàn bộ chiều rộng */
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #17a2b8; /* Màu nền xanh dương nhạt */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Hiệu ứng chuyển màu */
 }
 
-.loading-animation:after {
-    content: "...";
-    animation: ellipsis 1.5s infinite;
+.add-chat-btn:hover {
+    background-color: #138496;
 }
 
-@keyframes ellipsis {
-    0% {
-        content: ".";
+.chat-summary .chat-item:hover,
+.question-history .question-item:hover {
+    background-color: #e9ecef; /* Màu nền khi hover */
+}
+
+.chat-item,
+.question-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    transition:
+        box-shadow 0.2s,
+        transform 0.2s; /* Hiệu ứng cho shadow và transform */
+    cursor: pointer;
+}
+
+.chat-item:hover,
+.question-item:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow khi hover */
+    transform: translateY(-2px); /* Nhấc lên khi hover */
+}
+
+.delete-chat-btn {
+    /* Styles cho nút xóa */
+    padding: 5px 10px;
+    background-color: #dc3545; /* Màu nền đỏ */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Hiệu ứng chuyển màu */
+    margin-left: 10px; /* Thêm khoảng cách */
+}
+
+.delete-chat-btn:hover {
+    background-color: #bd2130;
+}
+
+/* Các styles bổ sung cho responsive và */
+
+@media (max-width: 768px) {
+    .chat-tuvan-container {
+        flex-direction: column;
     }
-    33% {
-        content: "..";
+
+    .chat-summary,
+    .chat-window,
+    .question-history {
+        flex-basis: auto; /* Cho phép các cột mở rộng trên màn hình nhỏ */
+        width: auto; /* Chuyển sang chiều rộng tự động trên màn hình nhỏ */
     }
-    66% {
-        content: "...";
+
+    .chat-summary,
+    .question-history {
+        order: -1; /* Đưa các cột này lên trên cùng trên màn hình nhỏ */
     }
 }

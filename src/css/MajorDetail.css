@@ -1,48 +1,111 @@
-/* MajorDetail.css */
 .major-detail-container {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 220px; /* Cách cạnh trái màn hình */
-    background-color: antiquewhite;
-}
-
-.row {
-    display: flex;
-    margin-bottom: 20px;
+    font-family: "Arial", sans-serif;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
 }
 
 .row.header {
+    display: flex;
     align-items: center;
-    background-color: whitesmoke;
-    padding: 0 20px;
+    padding: 20px;
+    background-color: #f8f9fa; /* Màu nền cho header */
+    margin-bottom: 20px;
+}
+
+.university-logo img {
+    max-height: 60px; /* Giới hạn chiều cao của logo */
+    margin-right: 20px;
+    border-radius: 5px; /* Làm mềm các góc */
+    object-fit: contain;
+}
+
+.name-info h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.name-info h3 {
+    margin: 5px 0;
+    color: #666;
+    font-size: 18px;
 }
 
 .row.content {
-    background-color: white;
-}
-.logo {
-    flex-basis: 100px; /* Điều chỉnh kích thước logo */
-    padding-right: 10px; /* Khoảng cách giữa logo và thông tin */
-}
-
-.logo img {
-    width: 100%;
-    height: auto;
-}
-
-.name-info {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    gap: 20px;
+    justify-content: space-between;
 }
 
-.major-details {
-    flex-grow: 2; /* Chiếm nhiều không gian hơn */
-    padding: 20px;
-    border-right: 1px solid black;
-}
-
+.major-details,
 .other-majors {
-    flex-grow: 1; /* Chiếm ít không gian hơn */
-    padding: 20px;
+    flex: 1;
+}
+
+.major-details h4,
+.other-majors h4 {
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* Tinh chỉnh markdown content */
+.major-details {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    flex: 3; /* Cho phép nội dung ngành chiếm phần lớn không gian */
+    padding-right: 20px; /* Tạo khoảng cách giữa hai cột */
+}
+
+/* Tạo khoảng cách giữa các đoạn và tiêu đề */
+.major-details p {
+    margin-bottom: 10px;
+}
+
+/* Tinh chỉnh link trong markdown */
+.major-details a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Tinh chỉnh list trong markdown */
+.major-details ul,
+.major-details ol {
+    padding-left: 20px;
+}
+
+/* Thêm một số style cho blockquote */
+.major-details blockquote {
+    padding: 10px 20px;
+    margin: 0;
+    background-color: #eee;
+    border-left: 5px solid #ddd;
+}
+
+.other-majors-list {
+    flex: 1; /* Phần hiển thị các ngành khác nhỏ hơn */
+    padding-left: 20px;
+    border-left: 1px solid #eee; /* Tạo ranh giới giữa hai cột */
+}
+
+.other-major-item {
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.other-major-item:hover {
+    background-color: #f0f0f0; /* Hiệu ứng khi hover */
+}
+
+.other-major-item h5 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.other-major-item p {
+    margin: 5px 0;
+    font-size: 0.9rem;
 }

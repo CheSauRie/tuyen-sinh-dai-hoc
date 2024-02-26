@@ -28,12 +28,21 @@ const DangNhap = () => {
                 console.log("Đăng nhập thành công");
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userName', data.userName);
+                localStorage.setItem('role', data.role);
                 window.dispatchEvent(new Event('storage'));
                 // Chuyển hướng người dùng
-                const locationState = location.state || {};
-                const redirectTo = locationState.from || '/';
+
+                if (data.role === 'admin') {
+                    navigate('/admin');
+                } else {
+                    const locationState = location.state || {};
+                    const redirectTo = locationState.from || '/';
+                    navigate(redirectTo);
+                }
+                // const locationState = location.state || {};
+                // const redirectTo = locationState.from || '/';
                 toast.success("Đăng nhập thành công");
-                navigate(redirectTo);
+                //navigate(redirectTo);
 
             } else {
                 // Xử lý lỗi đăng nhập

@@ -1,53 +1,107 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import '../css/MajorDetail.css'; // Đảm bảo bạn đã tạo file CSS này
-import UET from '../img/UET.png'
+
 const MajorDetail = () => {
-    // Giả sử bạn có dữ liệu cho component này
-    const universityData = {
-        name: 'Tên Trường Đại Học',
-        logo: UET,
-        // Các dữ liệu khác
-    };
+    const { uni_code, major_name } = useParams();
+    const [majorDetails, setMajorDetails] = useState(null);
+    const [universityData, setUniversityData] = useState({});
+    const [otherMajors, setOtherMajors] = useState([]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        const fetchMajorDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:2000/api/v1/admin/major/${uni_code}`);
+                if (response.ok) {
+                    const majors = await response.json();
+                    const major = majors.find(m => m.major_name === major_name);
+                    if (major) {
+                        setMajorDetails(major);
+                    }
+                } else {
+                    console.error("Failed to fetch major details");
+                }
+            } catch (error) {
+                console.error("Error fetching major details: ", error);
+            }
+        };
 
-    const currentMajor = {
-        name: 'Tên Ngành',
-        markdownContent: 'Nội dung markdown chi tiết ngành', // Nội dung markdown
-        // Các thông tin khác của ngành
-    };
+        const fetchUniversityDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:2000/api/v1/admin/universities/details/${uni_code}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setUniversityData({
+                        logo: `http://localhost:2000/${data.logo.replace(/\\/g, '/')}` // Đảm bảo đường dẫn đúng
+                    });
+                } else {
+                    console.error("Failed to fetch university details");
+                }
+            } catch (error) {
+                console.error("Error fetching university details: ", error);
+            }
+        };
+        const fetchOtherMajors = async () => {
+            try {
+                const response = await fetch(`http://localhost:2000/api/v1/admin/major/${uni_code}`);
+                if (response.ok) {
+                    const majors = await response.json();
+                    // Lọc ra ngành hiện tại và lưu các ngành còn lại
+                    const otherMajors = majors.filter(m => m.major_name !== major_name);
+                    setOtherMajors(otherMajors);
+                } else {
+                    console.error("Failed to fetch other majors");
+                }
+            } catch (error) {
+                console.error("Error fetching other majors: ", error);
+            }
+        };
 
-    const otherMajors = [
-        // Danh sách các ngành còn lại
-    ];
+        fetchOtherMajors();
+        fetchMajorDetails();
+        fetchUniversityDetails();
+    }, [uni_code, major_name]);
+
+    if (!majorDetails) return <div>Loading...</div>;
+    const handleMajorClick = (selectedMajor) => {
+        navigate(`/truong-dai-hoc/${uni_code}/chi-tiet-nganh/${selectedMajor.major_name}`);
+    };
 
     return (
         <div className="major-detail-container">
-            {/* Dòng 1: Logo, Tên ngành và Tên trường */}
             <div className="row header">
-                <div className="logo">
-                    <img src={universityData.logo} alt="Logo trường" />
-                </div>
+                {universityData.logo && (
+                    <div className="university-logo">
+                        <img src={universityData.logo} alt="Logo của trường" />
+                    </div>
+                )}
                 <div className="name-info">
-                    <h2>{currentMajor.name}</h2>
-                    <h3>{universityData.name}</h3>
+                    <h2>{majorDetails.major_name}</h2>
+                    <h3>Mã ngành: {majorDetails.major_code}</h3>
+                    <h3>Chỉ tiêu: {majorDetails.quota}</h3>
                 </div>
             </div>
 
-            {/* Dòng 2: Chi tiết ngành và các ngành còn lại */}
             <div className="row content">
                 <div className="major-details">
-                    {/* Chi tiết ngành dạng markdown */}
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
+                    <h4>Thông tin tuyển sinh</h4>
+                    <ReactMarkdown>{majorDetails.admissions_information}</ReactMarkdown>
+                    <h4>Phương thức tuyển sinh</h4>
+                    <ReactMarkdown>{majorDetails.admissions_method}</ReactMarkdown>
+                    <h4>Mô tả ngành</h4>
+                    <ReactMarkdown>{majorDetails.description_major}</ReactMarkdown>
                 </div>
                 <div className="other-majors">
-                    {/* Danh sách các ngành còn lại */}
-                    <p>hi</p>
+                    <h4>Các Ngành Khác</h4>
+                    {otherMajors.map((major, index) => (
+                        <div key={index} className="other-major-item" onClick={() => handleMajorClick(major)}>
+                            <h5>{major.major_name}</h5>
+                            <p>Mã ngành: {major.major_code}</p>
+                            <p>Chỉ tiêu: {major.quota}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

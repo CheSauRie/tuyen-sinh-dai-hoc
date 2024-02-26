@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/TruongDaiHoc.css';
 import { useNavigate } from 'react-router-dom';
 import UET from '../img/UET.png'
@@ -6,51 +6,35 @@ const TruongDaiHoc = () => {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedMajor, setSelectedMajor] = useState('');
     const navigate = useNavigate();
-    const universities = [
-        {
-            id: 1,
-            name: 'Đại học A',
-            location: 'Hà Nội',
-            majors: ['Ngành A1', 'Ngành A2'],
-            image: UET,
-            logo: UET
-        },
-        {
-            id: 2,
-            name: 'Đại học B',
-            location: 'TP Hồ Chí Minh',
-            majors: ['Ngành B1', 'Ngành B2'],
-            image: UET,
-            logo: UET
-        },
-        {
-            id: 3,
-            name: 'Đại học C',
-            location: 'Đà Nẵng',
-            majors: ['Ngành C1', 'Ngành C2'],
-            image: UET,
-            logo: UET
-        },
-        {
-            id: 4,
-            name: 'Đại học D',
-            location: 'Cần Thơ',
-            majors: ['Ngành D1', 'Ngành D2'],
-            image: UET,
-            logo: UET
-        },
-        {
-            id: 5,
-            name: 'Đại học E',
-            location: 'Hải Phòng',
-            majors: ['Ngành E1', 'Ngành E2'],
-            image: UET,
-            logo: UET
-        }
-    ];
+    const [universities, setUniversities] = useState([]);
+
+    const baseURL = "http://localhost:2000/";
+    useEffect(() => {
+        // Hàm lấy danh sách trường đại học từ API
+        const fetchUniversities = async () => {
+            try {
+                const response = await fetch('http://localhost:2000/api/v1/admin/universities');
+                if (response.ok) {
+                    const data = await response.json();
+                    const universitiesWithImages = await Promise.all(data.universities.map(async (uni) => {
+                        const imgResponse = await fetch(`http://localhost:2000/api/v1/admin/universities/images/${uni.uni_id}`);
+                        const imgData = await imgResponse.json();
+                        return { ...uni, ...imgData };
+                    }));
+                    setUniversities(universitiesWithImages);
+                } else {
+                    console.error("Failed to fetch universities");
+                }
+            } catch (error) {
+                console.error("Error fetching universities: ", error);
+            }
+        };
+
+        fetchUniversities();
+    },);
 
     const goToUniversityDetail = (uni) => {
-        navigate(`/truong-dai-hoc/${uni.name}`); //Sau này có dữ liệu thì sửa thành uni.code
+        navigate(`/truong-dai-hoc/${uni.uni_code}`); //Sau này có dữ liệu thì sửa thành uni.code
     };
 
     // Hàm cập nhật khi lựa chọn địa điểm thay đổi
@@ -89,11 +73,11 @@ const TruongDaiHoc = () => {
             <div className="university-list">
                 {filteredUniversities.map((university, index) => (
                     <div key={index} className="university-card" onClick={() => { goToUniversityDetail(university) }}>
-                        <img src={university.image} alt={`Ảnh bìa của ${university.name}`} className="university-image" />
+                        <img src={`${baseURL}${university.background}`} alt={`Ảnh bìa của ${university.name}`} className="university-image" />
                         <div className="university-info">
-                            <img src={university.logo} alt={`Logo của ${university.name}`} className="university-logo" />
-                            <h3>{university.name}</h3>
-                            <p>Ngành nổi bật: {university.majors.join(', ')}</p>
+                            <img src={`${baseURL}${university.logo}`} alt={`Logo của ${university.name}`} className="university-logo" />
+                            <h3>{university.uni_name}</h3>
+                            {/* <p>Ngành nổi bật: {university.majors.join(', ')}</p> */}
                             <p>Tin tuyển sinh</p>
                             <button className="follow-button">Theo dõi</button>
                         </div>

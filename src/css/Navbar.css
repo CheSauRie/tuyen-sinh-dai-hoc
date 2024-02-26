@@ -3,28 +3,35 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #0056b3; /* Màu nền đậm hơn */
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem; /* Tăng padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm bóng */
 }
 
 .nav-logo {
-    width: 50px;
-    height: 50px; /* hoặc kích thước phù hợp với logo của bạn */
+    width: 40px; /* Điều chỉnh kích thước logo */
+    height: auto; /* Tự động điều chỉnh chiều cao */
 }
 
-.nav-title {
-    margin-left: -400px;
-}
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 1rem;
+    gap: 2rem; /* Tăng khoảng cách giữa các link */
+    align-items: center; /* Căn giữa các items */
 }
 
 .nav-links a {
     color: white;
     text-decoration: none;
+    padding: 0.25rem 0.5rem; /* Thêm padding */
+    border-radius: 5px; /* Bo tròn góc */
+    transition: background-color 0.3s; /* Thêm hiệu ứng chuyển màu */
+}
+
+.nav-links a:hover {
+    background-color: #004494; /* Màu nền khi hover */
+    color: #ffffff; /* Đổi màu chữ khi hover */
 }
 
 .auth-links {
@@ -33,26 +40,36 @@
 }
 
 .auth-links button {
-    background-color: #007bff;
+    background-color: #28a745; /* Màu nền cho nút */
     color: white;
     border: none;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    transition: background-color 0.3s; /* Thêm hiệu ứng chuyển màu */
+    border-radius: 5px; /* Bo tròn góc */
 }
 
 .auth-links button:hover {
-    background-color: #0056b3;
+    background-color: #218838; /* Màu nền khi hover */
 }
 
 .logout-button {
+    display: flex;
+    align-items: center; /* Căn giữa icon và chữ */
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    margin-left: 10px;
+    color: white; /* Màu chữ */
+    transition: color 0.3s; /* Thêm hiệu ứng chuyển màu */
+}
+
+.logout-button:hover {
+    color: #ffc107; /* Đổi màu chữ khi hover */
 }
 
 .logout-button svg {
-    width: 24px; /* Điều chỉnh kích thước icon nếu cần */
-    height: auto;
+    fill: currentColor; /* Icon màu giống chữ */
+    width: 24px; /* Điều chỉnh kích thước icon */
+    height: 24px; /* Điều chỉnh kích thước icon */
+    margin-right: 5px; /* Thêm khoảng cách giữa icon và chữ */
 }

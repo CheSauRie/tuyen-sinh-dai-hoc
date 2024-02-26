@@ -30,7 +30,7 @@ const DangKy = () => {
 
             const data = await response.json();
 
-            if (response.ok) {
+            if (data) {
                 toast.success("Đăng ký thành công!");
                 navigate('/dang-nhap'); // Chuyển hướng tới trang đăng nhập
             } else {

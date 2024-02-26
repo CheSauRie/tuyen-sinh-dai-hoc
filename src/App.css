@@ -42,3 +42,26 @@
   flex-direction: column;
   min-height: 100vh;
 }
+
+/* Tạo một thanh cuộn tùy chỉnh cho toàn bộ website */
+html {
+  overflow-y: scroll; /* Luôn hiển thị thanh cuộn dọc */
+}
+
+/* Tùy chỉnh scrollbar cho toàn bộ trang */
+::-webkit-scrollbar {
+  width: 8px; /* Giảm độ rộng của thanh cuộn */
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Màu nền của track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Màu của thumb */
+  border-radius: 4px; /* Làm tròn góc của thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Màu của thumb khi hover */
+}

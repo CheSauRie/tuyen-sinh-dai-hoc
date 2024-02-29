@@ -16,6 +16,8 @@ import ResetPassword from './components/ResetPassword';
 import AdminPage from './components/adminPage';
 import ManageUniversities from './components/ManageUniversities';
 import AdminUniDetail from './components/adminUniDetail';
+import ConsultationManagement from './components/ConsultationManagement';
+import UserAccount from './components/UserAccount';
 import "./App.css"
 const App = () => {
   return (
@@ -36,6 +38,8 @@ const App = () => {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/manage-universities" element={<ManageUniversities />} />
           <Route path="/admin/university/:uni_code" element={<AdminUniDetail />} />
+          <Route path='/quan-ly-tu-van' element={<ConsultationManagement />} />
+          <Route path='/quan-ly-tai-khoan' element={<UserAccount />} />
         </Routes>
         {/* <Footer /> */}
       </Router>

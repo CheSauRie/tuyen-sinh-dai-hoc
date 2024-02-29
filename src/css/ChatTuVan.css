@@ -129,6 +129,29 @@
     background-color: #bd2130;
 }
 
+.chat-message-question,
+.chat-message-answer {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.chat-message-question {
+    background-color: #f7f7f7;
+}
+
+.chat-message-answer {
+    background-color: #e2f4c7;
+}
+
+.loading-animation {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url("../img/loading-animation.gif") no-repeat center center;
+    background-size: cover;
+}
+
 /* Các styles bổ sung cho responsive và */
 
 @media (max-width: 768px) {

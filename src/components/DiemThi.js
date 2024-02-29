@@ -7,7 +7,7 @@ const DiemThi = () => {
     const [filteredUniversities, setFilteredUniversities] = useState([]);
     const [showProvinces, setShowProvinces] = useState(false);
     const [visibleUniversities, setVisibleUniversities] = useState(20);
-    const navigate = useNavigate(); // Thêm dòng này để sử dụng useHistory
+    const navigate = useNavigate();
 
     const universities = [
         { code: 'ANS', name: 'Đại học An Ninh Nhân Dân' },
@@ -39,7 +39,6 @@ const DiemThi = () => {
         { code: 'UEB', name: 'Đại học Kinh Tế' },
         { code: 'ULIS', name: 'Đại học Ngoại Ngữ' },
 
-        // Thêm các trường đại học khác tại đây
     ];
 
     const displayUniversities = filteredUniversities.length > 0 ? filteredUniversities : universities;
@@ -47,7 +46,7 @@ const DiemThi = () => {
         setShowProvinces(!showProvinces);
     };
     const loadMoreUniversities = () => {
-        setVisibleUniversities(prevCount => prevCount + 20); // Tăng số lượng trường đại học hiển thị
+        setVisibleUniversities(prevCount => prevCount + 20);
     };
 
     const handleSearch = () => {
@@ -55,14 +54,14 @@ const DiemThi = () => {
             uni.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredUniversities(filtered);
-        setVisibleUniversities(20); // Đặt lại số lượng trường đại học hiển thị
+        setVisibleUniversities(20);
     };
 
     const handleProvinceClick = (province) => {
         const filtered = universities.filter(uni => uni.province === province);
         setFilteredUniversities(filtered);
         setVisibleUniversities(20);
-        setSearchTerm(''); // Đặt lại searchTerm nếu bạn muốn
+        setSearchTerm('');
     };
 
     const handleUniversityClick = (uni) => {

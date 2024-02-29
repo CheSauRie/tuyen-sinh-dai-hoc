@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/TruongDaiHoc.css';
 import { useNavigate } from 'react-router-dom';
-import UET from '../img/UET.png'
+
 const TruongDaiHoc = () => {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedMajor, setSelectedMajor] = useState('');
@@ -31,10 +31,10 @@ const TruongDaiHoc = () => {
         };
 
         fetchUniversities();
-    },);
-
+    }, []);
+    console.log(universities);
     const goToUniversityDetail = (uni) => {
-        navigate(`/truong-dai-hoc/${uni.uni_code}`); //Sau này có dữ liệu thì sửa thành uni.code
+        navigate(`/truong-dai-hoc/${uni.uni_code}`);
     };
 
     // Hàm cập nhật khi lựa chọn địa điểm thay đổi
@@ -73,12 +73,11 @@ const TruongDaiHoc = () => {
             <div className="university-list">
                 {filteredUniversities.map((university, index) => (
                     <div key={index} className="university-card" onClick={() => { goToUniversityDetail(university) }}>
-                        <img src={`${baseURL}${university.background}`} alt={`Ảnh bìa của ${university.name}`} className="university-image" />
+                        <img src={`${baseURL}${university.background}`} alt={`Ảnh bìa của ${university.uni_name}`} className="university-image" />
                         <div className="university-info">
-                            <img src={`${baseURL}${university.logo}`} alt={`Logo của ${university.name}`} className="university-logo" />
+                            <img src={`${baseURL}${university.logo}`} alt={`Logo của ${university.uni_name}`} className="university-logo" />
                             <h3>{university.uni_name}</h3>
-                            {/* <p>Ngành nổi bật: {university.majors.join(', ')}</p> */}
-                            <p>Tin tuyển sinh</p>
+                            <p>{university.address}</p>
                             <button className="follow-button">Theo dõi</button>
                         </div>
                     </div>

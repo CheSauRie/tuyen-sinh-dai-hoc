@@ -43,7 +43,7 @@ const AdminPage = () => {
         if (type === 'file') {
             setImages(prevState => ({
                 ...prevState,
-                [name]: files[0] // Lưu trữ file hình ảnh đầu tiên được chọn
+                [name]: files[0]
             }));
         } else {
             setUniInfo(prevState => ({
@@ -62,27 +62,22 @@ const AdminPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const formData = new FormData();
         Object.keys(uniInfo).forEach(key => formData.append(key, uniInfo[key]));
         Object.keys(markdownContent).forEach(key => formData.append(key, markdownContent[key]));
         Object.keys(images).forEach(key => {
             if (images[key]) formData.append(key, images[key]);
         });
-
         // Gửi FormData đến server
         const response = await fetch('http://localhost:2000/api/v1/admin/universities', {
             method: 'POST',
-            body: formData // Gửi FormData thay vì JSON
-            // Lưu ý: Khi gửi FormData, không cần thiết lập 'Content-Type' trong headers
+            body: formData
         });
 
         if (response.ok) {
             console.log('Data successfully saved');
-            // Additional success handling
         } else {
             console.error('Failed to save data');
-            // Additional error handling
         }
     };
 

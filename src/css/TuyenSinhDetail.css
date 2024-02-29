@@ -1,17 +1,14 @@
 /* TuyenSinhDetail.css */
 .university-detail-page {
-    /* Các định dạng cơ bản cho trang */
     box-sizing: border-box;
 }
 
 .cover-image {
     width: 100%;
-    height: 300px; /* Hoặc chiều cao tùy chỉnh */
+    height: 300px;
     background-size: cover;
-    /* background-position: center; */
 }
 
-/* TuyenSinhDetail.css */
 .container-fluid {
     display: flex;
     height: 112px;
@@ -20,7 +17,6 @@
 }
 
 .university-logo-tuyensinh {
-    border: 1px solid #ececec;
     width: 50px;
     height: 50px;
     border-radius: 5px;
@@ -29,11 +25,11 @@
 }
 
 .university-logo-tuyensinh img {
-    width: 100%; /* Đảm bảo logo chiếm toàn bộ chiều rộng của container logo */
+    width: 100%;
 }
 
 .university-info-tuyensinh {
-    flex-basis: 80%; /* Phần còn lại cho thông tin trường */
+    flex-basis: 80%;
 }
 
 .university-info-tuyensinh h2 {
@@ -41,10 +37,11 @@
 }
 
 .statistics-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-    background-color: #f0f0f0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    padding: 20px 5%;
+    background-color: #f8f8f8; /* Softer background color */
 }
 
 .statistic-item {
@@ -74,17 +71,16 @@
     margin-top: 10px;
 }
 
-/* Thêm các định dạng khác nếu cần */
-
-/* Định dạng cho các hình tròn trong statistics */
-
 .majors-list-container {
     padding: 20px;
 }
 
 .major-item {
-    border-bottom: 1px solid #ddd; /* Tạo đường kẻ phân cách */
+    border-bottom: 1px solid #ddd;
     margin: 10px 150px;
+    background-color: #ffffff; /* Light background for each item */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
 
 .major-item h4 {
@@ -99,7 +95,6 @@
 
 .icon {
     margin-right: 5px;
-    /* Thêm CSS cho icon nếu bạn sử dụng hình ảnh hoặc font icon */
 }
 
 .icon-container {
@@ -112,13 +107,27 @@
 .major-name {
     cursor: pointer;
 }
-
-/* introduction */
+.major-name:hover {
+    text-decoration: underline; /* Indicate clickable items */
+    cursor: pointer;
+}
 .introduction-section {
     text-align: center;
-    padding: 20px;
+    padding: 20px 40px;
+    margin: auto;
+}
+.introduction-section ReactMarkdown,
+.introduction-section .react-markdown {
+    text-align: left;
+    max-width: 100%;
+    margin: auto;
 }
 
+.introduction-section p,
+.introduction-section ul,
+.introduction-section ol {
+    text-align: left;
+}
 .introduction-section h3 {
     margin-bottom: 20px;
 }
@@ -160,13 +169,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in effect */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    width: 50%; /* Điều chỉnh theo nhu cầu */
+    width: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .close-button {
@@ -175,28 +195,42 @@
     cursor: pointer;
 }
 
+.close-button:hover {
+    color: #d9534f; /* Highlight close button on hover */
+}
+
 .user-reviews {
     padding: 20px;
-    background-color: #f8f8f8; /* Màu nền cho phần đánh giá */
-    border-top: 1px solid #ddd; /* Phân cách phần đánh giá */
+    margin-top: 20px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #ddd;
 }
 
 .user-reviews-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .review-item {
     margin-bottom: 15px;
     padding: 10px;
-    background-color: #fff; /* Màu nền cho mỗi đánh giá */
-    border: 1px solid #eee; /* Viền cho mỗi đánh giá */
-    border-radius: 5px; /* Bo tròn góc */
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .review-item strong {
-    display: block; /* Hiển thị tên người dùng trên một dòng riêng */
+    font-size: 16px;
+    color: #007bff;
+    display: block;
+}
+.review-item p {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #495057;
 }
 
 .registration-section {
@@ -238,14 +272,18 @@
 }
 
 .registration-form button {
-    padding: 10px;
-    background-color: blue;
-    color: white;
+    background-color: #28a745;
+    color: #ffffff;
+    font-weight: bold;
     border: none;
+    padding: 10px;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
-
+.registration-form button:hover {
+    background-color: #218838; /* Darken button on hover for feedback */
+}
 .review-modal {
     position: fixed;
     left: 0;
@@ -256,14 +294,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* Đảm bảo modal ở trên cùng */
+    z-index: 1000;
 }
 
 .modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    width: 50%; /* Điều chỉnh theo nhu cầu */
+    width: 50%;
 }
 .close-modal {
     float: right;
@@ -303,9 +341,49 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .user-reviews button:hover {
     background-color: #0056b3;
+}
+
+.show-more-reviews {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.show-more-reviews:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .container-fluid {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .majors-list-container,
+    .user-reviews,
+    .introduction-section {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .info-card,
+    .major-item {
+        width: 100%; /* Adjust for smaller screens */
+    }
+
+    .modal-content {
+        width: 90%; /* Make modal narrower on smaller screens */
+    }
 }

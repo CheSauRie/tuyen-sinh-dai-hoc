@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import "../css/ResetPass.css"
+
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const location = useLocation();

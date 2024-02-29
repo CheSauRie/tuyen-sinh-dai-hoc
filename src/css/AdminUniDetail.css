@@ -1,0 +1,79 @@
+/* AdminUniDetail.css */
+.admin-uni-detail-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.admin-uni-detail-container h1 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.admin-uni-detail-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.markdown-editor-container {
+    margin-bottom: 20px;
+}
+
+.md-editor {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.label-quota {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-quota {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.save-change-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.save-change-btn:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .admin-uni-detail-container {
+        padding: 15px;
+    }
+
+    .admin-uni-detail-select,
+    .input-quota,
+    .save-change-btn {
+        font-size: 14px;
+    }
+}

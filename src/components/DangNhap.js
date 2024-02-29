@@ -24,14 +24,11 @@ const DangNhap = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                // Lưu JWT token vào localStorage hoặc cách lưu trữ khác
-                console.log("Đăng nhập thành công");
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userName', data.userName);
                 localStorage.setItem('role', data.role);
+                localStorage.setItem('user-email', email)
                 window.dispatchEvent(new Event('storage'));
-                // Chuyển hướng người dùng
-
                 if (data.role === 'admin') {
                     navigate('/admin');
                 } else {
@@ -39,13 +36,8 @@ const DangNhap = () => {
                     const redirectTo = locationState.from || '/';
                     navigate(redirectTo);
                 }
-                // const locationState = location.state || {};
-                // const redirectTo = locationState.from || '/';
                 toast.success("Đăng nhập thành công");
-                //navigate(redirectTo);
-
             } else {
-                // Xử lý lỗi đăng nhập
                 toast.error("Đăng nhập thất bại: Kiểm tra lại tài khoản và mật khẩu");
                 console.error('Đăng nhập thất bại:', data.message);
             }
@@ -122,7 +114,7 @@ const DangNhap = () => {
                         value={resetEmail}
                         onChange={(e) => setResetEmail(e.target.value)}
                     />
-                    <button type="submit">Gửi Yêu Cầu</button>
+                    <button type="submit" className='reset-button'>Gửi Yêu Cầu</button>
                 </form>
             </Modal>
         </div>

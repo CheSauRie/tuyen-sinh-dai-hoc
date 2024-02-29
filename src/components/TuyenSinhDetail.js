@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import '../css/TuyenSinhDetail.css'; // Đảm bảo bạn đã tạo file CSS này
-import UET from "../img/UET.png"
+import '../css/TuyenSinhDetail.css';
 import ReactMarkdown from 'react-markdown';
+
 const TuyenSinhDetail = () => {
     const { uni_code } = useParams();
-    const [showModal, setShowModal] = useState(false); // Trạng thái để quản lý việc hiển thị modal
-    const [selectedCard, setSelectedCard] = useState(null); // Trạng thái để xác định card được chọn
+    const [showModal, setShowModal] = useState(false);
+    const [selectedCard, setSelectedCard] = useState(null);
     const navigate = useNavigate();
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [universityData, setUniversityData] = useState([])
@@ -16,6 +16,24 @@ const TuyenSinhDetail = () => {
     const [infoCards, setInfoCards] = useState([]);
     const [mission, setMission] = useState('')
     const [majors, setMajors] = useState([]);
+    const [userReviews, setUserReviews] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [visibleReviews, setVisibleReviews] = useState(2);
+
+    const [reviewInfo, setReviewInfo] = useState({
+        major_id: '',
+        pros: '',
+        cons: ''
+    });
+
+    const [consultationInfo, setConsultationInfo] = useState({
+        major_id: '',
+        consulting_information: '',
+        consultation_name: '',
+        consultation_email: '',
+        consultation_phone: ''
+    });
+
     function getRandomColor() {
         const colors = ['#ff6384', '#36a2eb', '#cc65fe', '#ffcd56'];
         return colors[Math.floor(Math.random() * colors.length)];
@@ -75,19 +93,116 @@ const TuyenSinhDetail = () => {
                 console.error("Error fetching majors: ", error);
             }
         };
-
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch(`http://localhost:2000/api/v1/user/review/${uni_code}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserReviews(data); // Giả sử API trả về một mảng đánh giá trong `data.reviews`
+                } else {
+                    console.error("Failed to fetch reviews");
+                }
+            } catch (error) {
+                console.error("Error fetching reviews: ", error);
+            }
+        };
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+        fetchReviews();
         fetchMajors();
         fetchUniversityDetails();
     }, [uni_code]);
 
-    const userReviews = [
-        { username: 'Người dùng 1', review: 'Trường rất tốt, giáo viên nhiệt tình.' },
-        { username: 'Người dùng 2', review: 'Chương trình học hiện đại và thực tế.' },
-        // Thêm các đánh giá khác
-    ];
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch(`http://localhost:2000/api/v1/user/review/${uni_code}`, {
+                headers: {
+                    'token': `${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Không thể lấy danh sách đánh giá.');
+            }
+            const data = await response.json();
+            // Cập nhật state với danh sách đánh giá mới
+            setUserReviews(data);
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách đánh giá:', error);
+        }
+    };
+    const submitReview = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:2000/api/v1/user/add-review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(reviewInfo)
+            });
+
+            if (!response.ok) {
+                throw new Error('Có lỗi xảy ra khi gửi đánh giá.');
+            }
+
+            // const newReview = await response.json(); // Giả sử response trả về đánh giá mới được thêm, bao gồm cả thông tin người dùng và ngành
+
+            // // Cập nhật danh sách đánh giá trên UI mà không cần refresh trang
+            // setUserReviews(prevReviews => [newReview, ...prevReviews]);
+            fetchReviews();
+            // setShowReviewModal(false); // Đóng modal sau khi gửi thành công
+            // Reset form nếu cần
+            setReviewInfo({
+                major_id: '',
+                pros: '',
+                cons: ''
+            });
+            alert('Đánh giá đã được gửi thành công!');
+            setShowReviewModal(false); // Đóng modal form đánh giá
+            // Cập nhật UI nếu cần
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+
     const handleCardClick = (card) => {
         setSelectedCard(card);
         setShowModal(true);
+    };
+
+    const handleConsultationSubmit = async (e) => {
+        e.preventDefault();
+        const apiUrl = 'http://localhost:2000/api/v1/user/consultation';
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(consultationInfo),
+            });
+
+            if (!response.ok) {
+                throw new Error('Lỗi khi gửi thông tin tư vấn.');
+            }
+
+            alert('Đăng ký tư vấn thành công!');
+            // Reset form và state nếu cần
+            setConsultationInfo({
+                major_id: '',
+                consulting_information: '',
+                consultation_name: '',
+                consultation_email: '',
+                consultation_phone: ''
+            });
+        } catch (error) {
+            console.error('Failed to submit consultation:', error);
+            alert('Đăng ký tư vấn không thành công. Vui lòng thử lại.');
+        }
     };
 
     const closeModal = () => {
@@ -108,12 +223,17 @@ const TuyenSinhDetail = () => {
             navigate('/dang-nhap'); // Chuyển hướng đến trang đăng nhập
         }
     }
+
     const closeReviewModal = () => setShowReviewModal(false);
+
+    const showMoreReviews = () => {
+        setVisibleReviews(prevVisibleReviews => prevVisibleReviews + 2); // Hiển thị thêm 2 đánh giá
+    };
+
     return (
         <div className="university-detail-page">
             {/* Phần 1: Ảnh bìa */}
             <div className="cover-image" style={{ backgroundImage: `url(${universityData.coverImage})` }}></div>
-
 
             {/* Phần 2: Thông tin trường */}
             <div className="container-fluid university-info-container">
@@ -125,7 +245,6 @@ const TuyenSinhDetail = () => {
                     <p>{universityData.address} | <a href={universityData.website}>Website</a></p>
                 </div>
             </div>
-
 
             {/* Phần 3: Thống kê */}
             <div className="statistics-container">
@@ -184,12 +303,17 @@ const TuyenSinhDetail = () => {
                     <h3>Đánh Giá Từ Người Dùng</h3>
                     <button onClick={openReviewModal}>Đánh Giá</button>
                 </div>
-                {userReviews.map((review, index) => (
+                {userReviews.slice(0, visibleReviews).map((review, index) => (
                     <div key={index} className="review-item">
                         <strong>{review.username}</strong>
-                        <p>{review.review}</p>
+                        <p>Ngành: {review.majorName}</p>
+                        <p>Ưu điểm: {review.pros}</p>
+                        <p>Nhược điểm: {review.cons}</p>
                     </div>
                 ))}
+                {visibleReviews < userReviews.length && (
+                    <button onClick={showMoreReviews} className="show-more-reviews">Xem thêm</button>
+                )}
             </div>
 
             {/* Modal Đánh Giá */}
@@ -197,19 +321,32 @@ const TuyenSinhDetail = () => {
                 <div className="review-modal">
                     <div className="modal-content">
                         <span className="close-modal" onClick={closeReviewModal}>&times;</span>
-                        <form>
-                            <select>
-                                <option value="">Chọn ngành đánh giá</option>
-                                {/* Các lựa chọn ngành */}
+                        <form onSubmit={submitReview}>
+                            <select
+                                value={reviewInfo.major_id}
+                                onChange={(e) => setReviewInfo({ ...reviewInfo, major_id: e.target.value })}
+                            >
+                                {/* Các lựa chọn ngành, ví dụ */}
+                                {majors.map((major) => (
+                                    <option value={major.major_id}>{major.major_name}</option>
+                                ))}
                             </select>
-                            <textarea placeholder="Ưu điểm"></textarea>
-                            <textarea placeholder="Nhược điểm"></textarea>
+                            <textarea
+                                placeholder="Ưu điểm"
+                                value={reviewInfo.pros}
+                                onChange={(e) => setReviewInfo({ ...reviewInfo, pros: e.target.value })}
+                            ></textarea>
+                            <textarea
+                                placeholder="Nhược điểm"
+                                value={reviewInfo.cons}
+                                onChange={(e) => setReviewInfo({ ...reviewInfo, cons: e.target.value })}
+                            ></textarea>
                             <button type="submit">Gửi Đánh Giá</button>
                         </form>
+
                     </div>
                 </div>
             )}
-
 
             {/* Phần 7: Đăng ký tư vấn */}
             <div className="registration-section">
@@ -218,15 +355,48 @@ const TuyenSinhDetail = () => {
                 </div>
                 <div className="registration-form">
                     <h3>Đăng Ký Tư Vấn</h3>
-                    <form>
-                        <input type="text" placeholder="Tên của bạn" />
-                        <input type="email" placeholder="Email" />
-                        <input type="tel" placeholder="Số điện thoại" />
-                        <select>
+                    <form onSubmit={handleConsultationSubmit}>
+                        {!isLoggedIn && (
+                            <>
+                                <input
+                                    type="text"
+                                    placeholder="Tên của bạn"
+                                    value={consultationInfo.consultation_name}
+                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, consultation_name: e.target.value })}
+
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={consultationInfo.consultation_email}
+                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, consultation_email: e.target.value })}
+
+                                />
+                                <input
+                                    type="tel"
+                                    placeholder="Số điện thoại"
+                                    value={consultationInfo.consultation_phone}
+                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, consultation_phone: e.target.value })}
+
+                                />
+                            </>
+                        )}
+                        <select
+                            value={consultationInfo.major_id}
+                            onChange={(e) => setConsultationInfo({ ...consultationInfo, major_id: e.target.value })}
+                            required
+                        >
                             <option value="">Chọn ngành cần tư vấn</option>
-                            {/* Các ngành khác */}
+                            {majors.map((major) => (
+                                <option key={major.major_id} value={major.major_id}>{major.major_name}</option>
+                            ))}
                         </select>
-                        <textarea placeholder="Thông tin cần tư vấn"></textarea>
+                        <textarea
+                            placeholder="Thông tin cần tư vấn"
+                            value={consultationInfo.consulting_information}
+                            onChange={(e) => setConsultationInfo({ ...consultationInfo, consulting_information: e.target.value })}
+                            required
+                        ></textarea>
                         <button type="submit">Đăng ký tư vấn</button>
                     </form>
                 </div>

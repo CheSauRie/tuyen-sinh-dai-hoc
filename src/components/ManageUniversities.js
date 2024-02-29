@@ -6,7 +6,6 @@ import MarkdownIt from 'markdown-it';
 const ManageUniversities = () => {
     const [universities, setUniversities] = useState([]);
     const navigate = useNavigate();
-    const [selectedUniversity, setSelectedUniversity] = useState(null);
     const [majorName, setMajorName] = useState('');
     const [majorCode, setMajorCode] = useState('');
     const [admissionsInfo, setAdmissionsInfo] = useState('');
@@ -31,7 +30,7 @@ const ManageUniversities = () => {
                 const data = await response.json();
                 setUniversities(data.universities);
             } else {
-                // Xử lý lỗi (ví dụ: thông báo)
+                console.log("Lỗi lấy danh sách trường học");
             }
         };
 
@@ -72,7 +71,7 @@ const ManageUniversities = () => {
         });
 
         if (response.ok) {
-            // Xử lý sau khi thêm thành công (ví dụ: thông báo và làm mới form)
+            // Xử lý sau khi thêm thành công
             setMajorName('');
             setMajorCode('');
             setAdmissionsInfo('');
@@ -104,8 +103,8 @@ const ManageUniversities = () => {
                             <td>{uni.address}</td>
                             <td>
                                 {/* <button onClick={() => handleDelete(uni.uni_id)}>Xóa</button> */}
-                                <button onClick={() => openAddMajorModal(uni.uni_id)}>Thêm Ngành</button>
-                                <button onClick={() => navigate(`/admin/university/${uni.uni_code}`)}>Chi Tiết</button>
+                                <button className="manage-uni-button" onClick={() => openAddMajorModal(uni.uni_id)}>Thêm Ngành</button>
+                                <button className="manage-uni-button" onClick={() => navigate(`/admin/university/${uni.uni_code}`)}>Chi Tiết</button>
                             </td>
                         </tr>
                     ))}

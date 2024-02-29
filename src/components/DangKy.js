@@ -19,7 +19,6 @@ const DangKy = () => {
         }
 
         try {
-            // Thay thế URL với endpoint của API đăng ký của bạn
             const response = await fetch('http://localhost:2000/api/v1/user/register', {
                 method: 'POST',
                 headers: {
@@ -32,7 +31,7 @@ const DangKy = () => {
 
             if (data) {
                 toast.success("Đăng ký thành công!");
-                navigate('/dang-nhap'); // Chuyển hướng tới trang đăng nhập
+                navigate('/dang-nhap');
             } else {
                 toast.error(`Đăng ký thất bại: ${data.message}`);
             }

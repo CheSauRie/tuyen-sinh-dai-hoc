@@ -1,61 +1,86 @@
 /* UniversityDetail.css */
 .university-detail-container {
     padding: 20px;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: auto;
+    background-color: #fff; /* Màu nền cho container */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+    border-radius: 8px; /* Bo tròn góc */
 }
 
 .university-contact {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Đảm bảo các items được căn giữa theo chiều dọc */
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #eeeeee; /* Phân cách giữa các phần */
+    padding-bottom: 20px;
 }
 
-.university-contact .contact-info {
-    width: 60%; /* Chiếm khoảng 60% chiều rộng */
+.university-contact div,
+.university-logo-unidetail {
+    flex: 1;
 }
 
-.university-contact .university-logo-unidetail {
-    width: 40%; /* Chiếm khoảng 40% chiều rộng */
-    text-align: right; /* Căn chỉnh logo về bên phải */
+.university-contact h2 {
+    color: #0056b3; /* Màu sắc cho tiêu đề */
+    margin-bottom: 15px;
 }
 
-.university-contact .university-logo-unidetail img {
-    max-width: 80%; /* Đảm bảo logo không quá lớn */
-    height: auto; /* Duy trì tỷ lệ chiều cao */
+.university-contact p {
+    font-size: 16px; /* Kích thước font cho thông tin */
+    color: #666; /* Màu font */
+    margin-bottom: 10px; /* Khoảng cách giữa các dòng */
 }
+
+.university-contact a {
+    color: #007bff; /* Màu cho link */
+    text-decoration: none; /* Bỏ gạch dưới của link */
+}
+
+.university-logo-unidetail img {
+    max-width: 50%; /* Giảm kích thước xuống còn 50% */
+    height: auto; /* Giữ nguyên tỷ lệ */
+    display: block; /* Để logo ở giữa nếu cần */
+    margin: 0 auto;
+}
+
 .university-admission,
 .university-scores {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .university-scores table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ */
 }
 
 .university-scores th,
 .university-scores td {
     border: 1px solid #ddd;
-    padding: 12px 15px; /* Tăng padding */
+    padding: 12px;
     text-align: left;
 }
 
 .university-scores th {
-    background-color: #0056b3; /* Màu nền cho header */
-    color: white; /* Màu chữ cho header */
-    font-size: 16px; /* Kích thước chữ cho header */
+    background-color: #0056b3;
+    color: white;
 }
 
 .university-scores tr:nth-child(even) {
-    background-color: #f2f2f2; /* Màu nền cho các hàng chẵn */
+    background-color: #f2f2f2;
 }
 
 .university-scores tr:hover {
     background-color: #ddd; /* Màu nền khi hover */
 }
 
-/* Thêm các styling khác tùy ý bạn */
+@media (max-width: 768px) {
+    .university-contact {
+        flex-direction: column; /* Các item xếp dọc khi màn hình nhỏ */
+    }
+    .university-logo-unidetail {
+        margin-top: 20px;
+        text-align: center; /* Căn giữa logo khi màn hình nhỏ */
+    }
+}

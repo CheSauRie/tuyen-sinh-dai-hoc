@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/ChatTuVan.css';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 const ChatTuVan = () => {
     const [question, setQuestion] = useState('');
     const [selectedChatId, setSelectedChatId] = useState(null);
-    const [chatHistory, setChatHistory] = useState([]);
     const [selectedChatDetails, setSelectedChatDetails] = useState([]);
-    const [chatSummary, setChatSummary] = useState([]); // Update state này để lưu trữ danh sách chat
-    const [questionHistory, setQuestionHistory] = useState([]); // Update state này để lưu trữ lịch sử câu hỏi
+    const [chatSummary, setChatSummary] = useState([]);
+    const [questionHistory, setQuestionHistory] = useState([]);
     const [isNewChat, setIsNewChat] = useState(true);
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchChats = async () => {
-            const token = localStorage.getItem('token'); // Hoặc lấy token từ nơi bạn lưu trữ
+            const token = localStorage.getItem('token'); // Lấy token
             try {
                 const response = await fetch('http://localhost:2000/api/v1/chat/get-chat', {
                     method: 'GET',
@@ -27,17 +28,20 @@ const ChatTuVan = () => {
                 }
 
                 const data = await response.json();
-                setChatSummary(data); // Giả sử API trả về một mảng các đoạn chat
-                // setQuestionHistory(data); // Update state này nếu bạn cũng muốn lấy lịch sử câu hỏi từ API
+                setChatSummary(data); // Lưu data vào cột bên trái
             } catch (error) {
                 console.error('Error fetching chat summary:', error);
             }
         };
 
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/dang-nhap');
+        }
         fetchChats();
-    }, []); // Chỉ chạy một lần khi component mount
+    }, [navigate]);
 
-
+    // Hàm lấy chi tiết của 1 đoạn chat
     const fetchChatDetails = async (chatId) => {
         try {
             const url = new URL('http://localhost:2000/api/v1/chat/detail-message');
@@ -66,9 +70,9 @@ const ChatTuVan = () => {
 
     const handleDeleteChat = async (chatId) => {
         try {
-            const token = localStorage.getItem('token'); // Hoặc lấy token từ nơi bạn lưu trữ
+            const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:2000/api/v1/chat/delete-chat?chat_id=${chatId}`, {
-                method: 'DELETE', // Phương thức DELETE để xóa dữ liệu
+                method: 'DELETE',
                 headers: {
                     'token': `${token}`,
                     'Content-Type': 'application/json'
@@ -105,12 +109,12 @@ const ChatTuVan = () => {
             ).filter(detail => detail.tempId === undefined || detail.id) // Loại bỏ entry tạm thời nếu cần
         );
     };
+
     const handleSendQuestion = async () => {
         if (!question.trim()) return;
 
         let currentChatId = selectedChatId;
-        const tempId = Date.now(); // ID tạm thời cho entry mới
-        // // Thêm entry tạm thời vào selectedChatDetails
+        const tempId = Date.now();
         setSelectedChatDetails(prev => [...prev, { tempId, question, answer: 'Đang chờ phản hồi...', isLoading: true }]);
         if (isNewChat) {
             try {
@@ -118,9 +122,9 @@ const ChatTuVan = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'token': `${localStorage.getItem('token')}` // Thay đổi header phù hợp
+                        'token': `${localStorage.getItem('token')}`
                     },
-                    body: JSON.stringify({ question: question }) // Điều chỉnh payload phù hợp với API của bạn
+                    body: JSON.stringify({ question: question })
                 });
                 const newChat = await response.json();
                 currentChatId = newChat.chat_id;
@@ -128,8 +132,8 @@ const ChatTuVan = () => {
                 setChatSummary(prevChats => [...prevChats, {
                     chat_id: newChat.chat_id,
                     summary: newChat.summary,
-                    createdAt: new Date().toISOString() // Hoặc sử dụng timestamp từ server nếu có
-                }]); // Giả sử API trả về chat_id của chat mới
+                    createdAt: new Date().toISOString()
+                }]);
                 setIsNewChat(false); // Đặt lại trạng thái isNewChat
             } catch (error) {
                 console.error('Lỗi khi tạo chat mới:', error);
@@ -175,7 +179,6 @@ const ChatTuVan = () => {
         }
     };
 
-
     const handleAddChat = () => {
         setSelectedChatDetails([]); // Xóa nội dung hiển thị ở giữa
         setSelectedChatId(null); // Đánh dấu không có chat nào được chọn
@@ -184,15 +187,23 @@ const ChatTuVan = () => {
         setQuestionHistory([])
     };
 
+    const confirmAndDeleteChat = async (chatId) => {
+        const confirm = window.confirm("Bạn có chắc chắn muốn xóa đoạn chat này không?");
+        if (confirm) {
+            await handleDeleteChat(chatId);
+            toast.success("Xóa đoạn chat thành công!");
+        }
+    };
     return (
         <div className="chat-tuvan-container">
+            <ToastContainer />
             <div className="chat-summary">
                 <button className="add-chat-btn" onClick={handleAddChat}>Thêm Chat</button>
                 {chatSummary.map((chat) => (
                     <div key={chat.chat_id} className="chat-item" onClick={() => fetchChatDetails(chat.chat_id)}>
                         <p>{chat.summary}</p>
                         <small>{new Date(chat.createdAt).toLocaleString()}</small>
-                        <button className="delete-chat-btn" onClick={() => handleDeleteChat(chat.chat_id)}>Xóa</button>
+                        <button className="delete-chat-btn" onClick={() => confirmAndDeleteChat(chat.chat_id)}>Xóa</button>
                     </div>
                 ))}
             </div>
@@ -201,8 +212,8 @@ const ChatTuVan = () => {
                 <div className="chat-messages">
                     {selectedChatDetails.map((detail) => (
                         <div key={detail.message_id} id={`chat_${detail.message_id}`} >
-                            <p><strong>Bạn:</strong> {detail.question}</p>
-                            <p><strong>Phản hồi:</strong> {detail.isLoading ? <span className="loading-animation"></span> : detail.answer}</p>
+                            <p className="chat-message-question"><strong>Bạn:</strong> {detail.question}</p>
+                            <p className="chat-message-answer"><strong>Phản hồi:</strong> {detail.isLoading ? <span className="loading-animation"></span> : detail.answer}</p>
                         </div>
                     ))}
 

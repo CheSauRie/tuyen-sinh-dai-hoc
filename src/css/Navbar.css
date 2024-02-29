@@ -73,3 +73,70 @@
     height: 24px; /* Điều chỉnh kích thước icon */
     margin-right: 5px; /* Thêm khoảng cách giữa icon và chữ */
 }
+
+.user-info-dropdown {
+    position: relative;
+    cursor: pointer;
+    display: inline-block; /* Thêm để dropdown align properly */
+    text-align: left; /* Đảm bảo text trong dropdown align properly */
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Thêm shadow cho dropdown */
+    width: 150px;
+    z-index: 1000;
+    margin-top: 8px;
+}
+.user-info-dropdown p {
+    margin: 0; /* Loại bỏ margin mặc định */
+    padding: 8px 12px; /* Thêm padding cho phần clickable */
+    background-color: #007bff; /* Màu nền cho button, bạn có thể thay đổi */
+    color: white; /* Màu chữ */
+    border-radius: 4px; /* Bo góc */
+    cursor: pointer; /* Thêm hiệu ứng con trỏ */
+}
+.dropdown-item {
+    display: block;
+    padding: 10px;
+    clear: both;
+    font-weight: 400;
+    color: #333;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid #eee; /* Optional */
+    cursor: pointer;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+.logout-icon {
+    display: inline-block;
+    cursor: pointer;
+    padding: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-icon:hover {
+    background-color: #f1f1f1; /* Màu nền khi hover */
+}
+
+.logout-icon img {
+    width: 24px; /* Kích thước của icon */
+    height: auto;
+}
+.text-logout {
+    color: black;
+    margin: 10px;
+}

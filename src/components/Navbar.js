@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/Navbar.css'; // Đảm bảo đường dẫn đến file CSS đúng
-import LOGO from '../img/logo-q.png'
-import { ReactComponent as LogoutIcon } from '../img/logout.svg';
+import LOGO from '../img/logoq.png'
+import LogoutIcon from '../img/logout.svg';
 const Navbar = () => {
     const [userName, setUserName] = useState('');
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
     useEffect(() => {
         const checkLoginStatus = () => {
             const token = localStorage.getItem('token');
@@ -49,15 +50,18 @@ const Navbar = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userName');
         localStorage.removeItem('role');
+        localStorage.removeItem('user-email')
+        setShowDropdown(!showDropdown)
         setUserLoggedIn(false);
         setUserName('');
         setIsAdmin(false);
-        navigate('/'); // Hoặc chuyển hướng đến trang bạn muốn sau khi đăng xuất
+        navigate('/truong-dai-hoc'); // Hoặc chuyển hướng đến trang bạn muốn sau khi đăng xuất
     };
+
+    const toggleDropdown = () => setShowDropdown(!showDropdown);
     return (
         <nav className="navbar">
             <img src={LOGO} alt="Logo" className="nav-logo" />
-            {/* <h1 className='nav-title'>Tư vấn tuyển sinh</h1> */}
             <ul className="nav-links">
                 {!isAdmin && (
                     <>
@@ -76,12 +80,20 @@ const Navbar = () => {
             </ul>
             <div className="auth-links">
                 {userLoggedIn ? (
-                    <>
-                        <p>Chào {userName}</p>
-                        <button onClick={handleLogout} className="logout-button">
-                            <LogoutIcon />
+                    <div className="user-info-dropdown">
+                        <button className="dropdown-toggle" onClick={toggleDropdown}>
+                            Chào {userName} {/* Sử dụng button để handle click */}
                         </button>
-                    </>
+                        {showDropdown && (
+                            <div className="dropdown-menu">
+                                <Link to="/quan-ly-tai-khoan" className="dropdown-item" onClick={toggleDropdown}>Quản lý tài khoản</Link>
+                                <div className="logout-icon" onClick={handleLogout}>
+                                    <img src={LogoutIcon} alt="Logout" />
+                                    <span className='text-logout'>Đăng xuất</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 ) : (
                     <>
                         <button onClick={handleLoginClick}>Đăng nhập</button>

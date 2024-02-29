@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import '../css/MajorDetail.css'; // Đảm bảo bạn đã tạo file CSS này
+import '../css/MajorDetail.css';
 
 const MajorDetail = () => {
     const { uni_code, major_name } = useParams();
@@ -34,7 +34,7 @@ const MajorDetail = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setUniversityData({
-                        logo: `http://localhost:2000/${data.logo.replace(/\\/g, '/')}` // Đảm bảo đường dẫn đúng
+                        logo: `http://localhost:2000/${data.logo.replace(/\\/g, '/')}`
                     });
                 } else {
                     console.error("Failed to fetch university details");
@@ -48,7 +48,6 @@ const MajorDetail = () => {
                 const response = await fetch(`http://localhost:2000/api/v1/admin/major/${uni_code}`);
                 if (response.ok) {
                     const majors = await response.json();
-                    // Lọc ra ngành hiện tại và lưu các ngành còn lại
                     const otherMajors = majors.filter(m => m.major_name !== major_name);
                     setOtherMajors(otherMajors);
                 } else {

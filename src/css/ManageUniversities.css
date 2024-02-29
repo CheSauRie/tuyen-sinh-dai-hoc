@@ -2,13 +2,16 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: Arial, sans-serif;
+    font-family: "Nunito", sans-serif;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 table,
@@ -19,38 +22,112 @@ td {
 
 th,
 td {
+    border: 1px solid #e1e1e1;
     text-align: left;
-    padding: 8px;
+    padding: 12px 15px;
 }
 
 th {
     background-color: #f2f2f2;
+    color: #333;
+    font-weight: 600;
 }
 
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-button {
-    background-color: #4caf50; /* Green */
+.manage-uni-button {
+    background-color: #007bff; /* Blue */
     color: white;
-    padding: 10px 20px;
-    margin: 5px 0;
+    padding: 8px 16px;
+    margin: 4px 2px;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-button:hover {
-    opacity: 0.8;
+.manage-uni-button:hover {
+    background-color: #0056b3;
 }
-
 .delete-button {
     background-color: #f44336; /* Red */
 }
 
-/* Responsive layout - makes the table full-width */
+.add-major-modal .modal-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: auto;
+    max-width: 600px;
+}
+
+.add-major-modal .close-modal {
+    float: right;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.add-major-modal h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.add-major-modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-major-modal input,
+.add-major-modal select,
+.add-major-modal textarea {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+.add-major-modal button[type="submit"] {
+    margin-top: 15px;
+}
+
+.md-editor {
+    margin-bottom: 20px;
+}
+
 @media screen and (max-width: 600px) {
-    table {
-        width: 100%;
+    .admin-manage-uni-container {
+        padding: 10px;
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    th,
+    td {
+        text-align: right;
+    }
+
+    td {
+        position: relative;
+        padding-left: 50%;
+    }
+
+    td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        white-space: nowrap;
     }
 }

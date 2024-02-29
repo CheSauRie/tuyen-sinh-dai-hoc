@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import MarkdownEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
+import "../css/AdminUniDetail.css"
 const mdParser = new MarkdownIt();
 
 const AdminUniDetail = () => {
@@ -92,7 +93,6 @@ const AdminUniDetail = () => {
 
             if (response.ok) {
                 alert('Cập nhật thành công!');
-                // Tải lại danh sách ngành sau khi cập nhật
                 fetchMajors();
             } else {
                 console.error('Failed to update major');
@@ -103,16 +103,19 @@ const AdminUniDetail = () => {
     };
 
     return (
-        <div>
+        <div className="admin-uni-detail-container">
             <h1>{university?.uni_name}</h1>
-            <select onChange={(e) => {
-                const selected = majors.find(major => major.major_id === parseInt(e.target.value));
-                setSelectedMajor(selected);
-                setAdmissionsInfo(selected?.admissions_information || '');
-                setAdmissionsMethod(selected?.admissions_method || '');
-                setDescriptionMajor(selected?.description_major || '');
-                setQuota(selected?.quota.toString() || '');
-            }}>
+            <select
+                className="admin-uni-detail-select"
+                onChange={(e) => {
+                    const selected = majors.find(major => major.major_id === parseInt(e.target.value));
+                    setSelectedMajor(selected);
+                    setAdmissionsInfo(selected?.admissions_information || '');
+                    setAdmissionsMethod(selected?.admissions_method || '');
+                    setDescriptionMajor(selected?.description_major || '');
+                    setQuota(selected?.quota.toString() || '');
+                }}
+            >
                 <option value="">Chọn Ngành</option>
                 {majors.map((major) => (
                     <option key={major.major_id} value={major.major_id}>{major.major_name}</option>
@@ -122,43 +125,54 @@ const AdminUniDetail = () => {
             {selectedMajor && (
                 <>
                     <p>Thông tin tuyển sinh</p>
-                    <MarkdownEditor
-                        value={admissionsInfo}
-                        style={{ height: '300px' }}
-                        renderHTML={(text) => mdParser.render(text)}
-                        onChange={({ text }) => setAdmissionsInfo(text)}
-                    />
-                    <p>Phương thức tuyển sinh</p>
-                    <MarkdownEditor
-                        value={admissionsMethod}
-                        style={{ height: '300px' }}
-                        renderHTML={(text) => mdParser.render(text)}
-                        onChange={({ text }) => setAdmissionsMethod(text)}
-                    />
-                    <p>Giới thiệu ngành</p>
-                    <MarkdownEditor
-                        value={descriptionMajor}
-                        style={{ height: '300px' }}
-                        renderHTML={(text) => mdParser.render(text)}
-                        onChange={({ text }) => setDescriptionMajor(text)}
-                    />
-                    <div>
-                        <label htmlFor="quota">Chỉ tiêu:</label>
-                        <input
-                            type="number"
-                            id="quota"
-                            name="quota"
-                            value={quota}
-                            onChange={(e) => setQuota(e.target.value)}
+                    <div className="markdown-editor-container">
+                        <MarkdownEditor
+                            className="md-editor"
+                            value={admissionsInfo}
+                            style={{ height: '300px' }}
+                            renderHTML={(text) => mdParser.render(text)}
+                            onChange={({ text }) => setAdmissionsInfo(text)}
                         />
                     </div>
-                    <button onClick={() => handleEditMajor(selectedMajor?.major_id, { ...selectedMajor, admissions_information: editInfo })}>
+                    <p>Phương thức tuyển sinh</p>
+                    <div className="markdown-editor-container">
+                        <MarkdownEditor
+                            className="md-editor"
+                            value={admissionsMethod}
+                            style={{ height: '300px' }}
+                            renderHTML={(text) => mdParser.render(text)}
+                            onChange={({ text }) => setAdmissionsMethod(text)}
+                        />
+                    </div>
+                    <p>Giới thiệu ngành</p>
+                    <div className="markdown-editor-container">
+                        <MarkdownEditor
+                            className="md-editor"
+                            value={descriptionMajor}
+                            style={{ height: '300px' }}
+                            renderHTML={(text) => mdParser.render(text)}
+                            onChange={({ text }) => setDescriptionMajor(text)}
+                        />
+                    </div>
+                    <label htmlFor="quota" className="label-quota">Chỉ tiêu:</label>
+                    <input
+                        type="number"
+                        id="quota"
+                        name="quota"
+                        className="input-quota"
+                        value={quota}
+                        onChange={(e) => setQuota(e.target.value)}
+                    />
+                    <button
+                        className="save-change-btn"
+                        onClick={() => handleEditMajor(selectedMajor?.major_id, { ...selectedMajor, admissions_information: editInfo })}
+                    >
                         Lưu Thay Đổi
                     </button>
                 </>
-
             )}
         </div>
+
     );
 };
 

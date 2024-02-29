@@ -1,37 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import '../css/UniversityDetail.css'; // Đảm bảo bạn đã tạo file CSS này
+import '../css/UniversityDetail.css';
 import UET from "../img/UET.png"
 const UniversityDetail = () => {
-    const { code } = useParams();
-    // Giả định thông tin chi tiết và dữ liệu khác từ database
-
-    // const [universityDetails, setUniversityDetails] = useState(null);
-    // useEffect(() => {
-    //     // Tạm thời giả định rằng chúng ta có một hàm lấy thông tin trường đại học dựa trên mã
-    //     fetchUniversityDetails(code);
-    // }, [code]);
-
-    // const fetchUniversityDetails = async (uniCode) => {
-    //     // Giả định rằng chúng ta có một API hoặc cách lấy dữ liệu dựa trên mã trường
-    //     // Ví dụ: fetch('/api/universities/' + uniCode)
-    //     // Lưu ý: Đây chỉ là ví dụ giả định
-    //     const response = await fetch('/api/universities/' + uniCode); // Đường dẫn giả định
-    //     const data = await response.json();
-    //     setUniversityDetails(data);
-    // };
-
-    // if (!universityDetails) {
-    //     return <div>Loading...</div>;
-    // }
-
     const universityDetails = {
         name: "Tên Trường Đại Học",
         address: "Địa chỉ của trường",
         phone: "Số điện thoại",
         website: "Website",
         email: "Email",
-        // Các thông tin khác
     };
 
     // Dữ liệu giả định cho điểm chuẩn

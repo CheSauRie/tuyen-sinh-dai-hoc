@@ -1,5 +1,6 @@
 import React from 'react';
-import '../css/Footer.css'; // Đảm bảo đường dẫn đến file CSS đúng
+import '../css/Footer.css';
+import UET from "../img/UET.png"
 
 const Footer = () => {
     return (
@@ -9,7 +10,7 @@ const Footer = () => {
                 <p>Số điện thoại: 0327804566</p>
                 <p>Email: 20020211@vnu.edu.vn</p>
                 <p>Hà Nội, Trường Đại học Công Nghệ</p>
-                {/* Thêm logo ở đây, ví dụ: <img src="path-to-logo.png" alt="Logo Trường Đại học Công Nghệ" /> */}
+                <img src={UET} alt="Logo Trường Đại học Công Nghệ" />
             </div>
         </footer>
     );

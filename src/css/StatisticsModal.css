@@ -1,0 +1,23 @@
+/* UniversityDetail.css */
+
+.Modal-Statistic {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 80%; /* Điều chỉnh kích thước tối đa của modal */
+    max-height: 80%; /* Điều chỉnh chiều cao tối đa của modal */
+    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung dài hơn */
+}
+
+.Overlay-Statistic {
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền cho overlay */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

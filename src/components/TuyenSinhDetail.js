@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import '../css/TuyenSinhDetail.css';
 import ReactMarkdown from 'react-markdown';
+import { format } from 'date-fns';
+import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const TuyenSinhDetail = () => {
     const { uni_code } = useParams();
@@ -19,27 +23,44 @@ const TuyenSinhDetail = () => {
     const [userReviews, setUserReviews] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [visibleReviews, setVisibleReviews] = useState(2);
+    const [schedules, setSchedules] = useState([]);
+    const [replyToReviewId, setReplyToReviewId] = useState(null);
+    const [replies, setReplies] = useState({});
+    const [currentReply, setCurrentReply] = useState('');
+    const [comments, setComments] = useState({
+        roots: [], // chứa các bình luận gốc
+        replies: {} // là một object với key là parent_review_id và giá trị là một array của replies
+    });
+    const [showRepliesCount, setShowRepliesCount] = useState({});
+
+    const handleShowMoreReplies = (parentId) => {
+        setShowRepliesCount(prevState => ({
+            ...prevState,
+            [parentId]: (prevState[parentId] || 4) + 4, // Tăng số lượng phản hồi hiển thị thêm 4
+        }));
+    };
 
     const [reviewInfo, setReviewInfo] = useState({
         major_id: '',
-        pros: '',
-        cons: ''
+        content: '',
+        parent_review_id: null
     });
 
     const [consultationInfo, setConsultationInfo] = useState({
-        major_id: '',
+        schedule_id: '',
         consulting_information: '',
-        consultation_name: '',
-        consultation_email: '',
-        consultation_phone: ''
+        username: '',
+        user_email: '',
+        user_phone: ''
     });
-
     function getRandomColor() {
         const colors = ['#ff6384', '#36a2eb', '#cc65fe', '#ffcd56'];
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+
         const fetchUniversityDetails = async () => {
             try {
                 const response = await fetch(`http://localhost:2000/api/v1/admin/universities/details/${uni_code}`);
@@ -97,8 +118,26 @@ const TuyenSinhDetail = () => {
             try {
                 const response = await fetch(`http://localhost:2000/api/v1/user/review/${uni_code}`);
                 if (response.ok) {
+
                     const data = await response.json();
-                    setUserReviews(data); // Giả sử API trả về một mảng đánh giá trong `data.reviews`
+                    const roots = data.filter(review => review.parent_review_id === null);
+                    // const replies = {};
+                    // data.forEach(review => {
+                    //     if (review.parent_review_id !== null) {
+                    //         if (!replies[review.parent_review_id]) {
+                    //             replies[review.parent_review_id] = [];
+                    //         }
+                    //         replies[review.parent_review_id].push(review);
+                    //     }
+                    // });
+                    const replies = data
+                        .filter(review => review.parent_review_id)
+                        .reduce((acc, reply) => {
+                            acc[reply.parent_review_id] = [...(acc[reply.parent_review_id] || []), reply];
+                            return acc;
+                        }, {});
+                    setUserReviews(data);
+                    setComments({ roots, replies });
                 } else {
                     console.error("Failed to fetch reviews");
                 }
@@ -106,34 +145,63 @@ const TuyenSinhDetail = () => {
                 console.error("Error fetching reviews: ", error);
             }
         };
-        const token = localStorage.getItem('token');
+
         if (token) {
             setIsLoggedIn(true);
         }
+
         fetchReviews();
         fetchMajors();
         fetchUniversityDetails();
     }, [uni_code]);
 
+    useEffect(() => {
+        // Hàm lấy danh sách lịch tư vấn từ server
+        const fetchSchedules = async () => {
+            try {
+                const response = await fetch(`http://localhost:2000/api/v1/user/consultation-schedule/${uni_code}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setSchedules(data);
+                } else {
+                    console.error("Failed to fetch majors");
+                }
+            } catch (error) {
+                console.error("Error fetching majors: ", error);
+            }
+        };
+
+        fetchSchedules();
+    }, []);
+
     const fetchReviews = async () => {
         try {
-            const response = await fetch(`http://localhost:2000/api/v1/user/review/${uni_code}`, {
-                headers: {
-                    'token': `${localStorage.getItem('token')}`
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Không thể lấy danh sách đánh giá.');
+            const response = await fetch(`http://localhost:2000/api/v1/user/review/${uni_code}`);
+            if (response.ok) {
+
+                const data = await response.json();
+                const roots = data.filter(review => review.parent_review_id === null);
+                const replies = data
+                    .filter(review => review.parent_review_id)
+                    .reduce((acc, reply) => {
+                        acc[reply.parent_review_id] = [...(acc[reply.parent_review_id] || []), reply];
+                        return acc;
+                    }, {});
+                setUserReviews(data);
+                setComments({ roots, replies });
+            } else {
+                console.error("Failed to fetch reviews");
             }
-            const data = await response.json();
-            // Cập nhật state với danh sách đánh giá mới
-            setUserReviews(data);
         } catch (error) {
-            console.error('Lỗi khi lấy danh sách đánh giá:', error);
+            console.error("Error fetching reviews: ", error);
         }
     };
+
     const submitReview = async (e) => {
         e.preventDefault();
+        if (!reviewInfo.major_id) {
+            return alert('Vui lòng chọn một ngành.');
+        }
         try {
             const response = await fetch('http://localhost:2000/api/v1/user/add-review', {
                 method: 'POST',
@@ -143,22 +211,15 @@ const TuyenSinhDetail = () => {
                 },
                 body: JSON.stringify(reviewInfo)
             });
-
             if (!response.ok) {
                 throw new Error('Có lỗi xảy ra khi gửi đánh giá.');
             }
 
-            // const newReview = await response.json(); // Giả sử response trả về đánh giá mới được thêm, bao gồm cả thông tin người dùng và ngành
-
-            // // Cập nhật danh sách đánh giá trên UI mà không cần refresh trang
-            // setUserReviews(prevReviews => [newReview, ...prevReviews]);
             fetchReviews();
-            // setShowReviewModal(false); // Đóng modal sau khi gửi thành công
-            // Reset form nếu cần
             setReviewInfo({
                 major_id: '',
-                pros: '',
-                cons: ''
+                content: '',
+                parent_review_id: null
             });
             alert('Đánh giá đã được gửi thành công!');
             setShowReviewModal(false); // Đóng modal form đánh giá
@@ -175,7 +236,7 @@ const TuyenSinhDetail = () => {
 
     const handleConsultationSubmit = async (e) => {
         e.preventDefault();
-        const apiUrl = 'http://localhost:2000/api/v1/user/consultation';
+        const apiUrl = 'http://localhost:2000/api/v1/user/consultation-request';
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -193,11 +254,11 @@ const TuyenSinhDetail = () => {
             alert('Đăng ký tư vấn thành công!');
             // Reset form và state nếu cần
             setConsultationInfo({
-                major_id: '',
+                schedule_id: "",
                 consulting_information: '',
-                consultation_name: '',
-                consultation_email: '',
-                consultation_phone: ''
+                username: '',
+                user_email: '',
+                user_phone: ''
             });
         } catch (error) {
             console.error('Failed to submit consultation:', error);
@@ -228,6 +289,89 @@ const TuyenSinhDetail = () => {
 
     const showMoreReviews = () => {
         setVisibleReviews(prevVisibleReviews => prevVisibleReviews + 2); // Hiển thị thêm 2 đánh giá
+    };
+
+    // Hàm gửi phản hồi đến server
+    const sendReplyToServer = async (reviewId, major_id, content) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:2000/api/v1/user/add-review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `${token}`
+                },
+                body: JSON.stringify({
+                    parent_review_id: reviewId,
+                    major_id: major_id,
+                    content: content,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const newReply = await response.json();
+            return newReply;
+        } catch (error) {
+            console.error('Could not send reply:', error);
+            throw error; // Có thể xử lý lỗi cụ thể nếu cần
+        }
+    };
+
+    const handleReplyClick = (reviewId) => {
+        // Nếu đang phản hồi bình luận này, đóng form. Ngược lại, mở form.
+        if (replies[reviewId]) {
+            const newReplies = { ...replies };
+            delete newReplies[reviewId];
+            setReplies(newReplies);
+        } else {
+            setReplies({ ...replies, [reviewId]: [] });
+        }
+    };
+
+    // Hàm xử lý khi nút Gửi Phản Hồi được click hiển thị
+    const handleSendReply = async (reviewId, major_id) => {
+        try {
+            // Gửi phản hồi đến server và nhận phản hồi mới
+            const newReply = await sendReplyToServer(reviewId, major_id, currentReply);
+
+            fetchReviews()
+            setCurrentReply('');
+            setReplyToReviewId(null); // Đóng form phản hồi
+            // Toast hoặc thông báo thành công
+            toast.success("Đã bình luận!");
+
+        } catch (error) {
+            alert('Lỗi khi gửi phản hồi: ' + error.message);
+        }
+    };
+
+    const renderReplies = (parentId) => {
+        if (!comments.replies[parentId]) {
+            return null;
+        }
+        const replies = comments.replies[parentId] || [];
+        const showCount = showRepliesCount[parentId] || 4;
+
+        // Lấy phản hồi từ cuối lên dựa vào showCount
+        const latestReplies = replies.length > showCount ? replies.slice(-showCount) : replies;
+        return (
+            <>
+                {latestReplies.map((reply) => (
+                    <div key={reply.review_id} className="reply-item">
+                        <strong>{reply.username || 'Người dùng ẩn danh'}</strong>
+                        <p>{reply.content}</p>
+                        <p className='time-reply'>{format(new Date(reply.createdAt), "dd/MM/yyyy HH:mm:ss")}</p>
+                        {renderReplies(reply.review_id)}
+                    </div>
+                ))}
+                {replies.length > showCount && (
+                    <button className="show-more-replies-btn" onClick={() => handleShowMoreReplies(parentId)}><FontAwesomeIcon icon={faCaretDown} /></button>
+                )}
+            </>
+        );
     };
 
     return (
@@ -297,18 +441,93 @@ const TuyenSinhDetail = () => {
                 )}
             </div>
 
-            {/* Phần 6: Đánh giá của người dùng */}
+            {/* Phần 6: Đăng ký tư vấn */}
+            <div className="registration-section">
+                <div className="university-image">
+                    <img src={universityData.coverImage} alt="Ảnh trường" />
+                </div>
+                <div className="registration-form">
+                    <h3>Đăng Ký Tư Vấn Online</h3>
+                    <form onSubmit={handleConsultationSubmit}>
+                        {!isLoggedIn && (
+                            <>
+                                <input
+                                    type="text"
+                                    placeholder="Tên của bạn"
+                                    value={consultationInfo.username}
+                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, username: e.target.value })}
+
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={consultationInfo.user_email}
+                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, user_email: e.target.value })}
+
+                                />
+                                <input
+                                    type="tel"
+                                    placeholder="Số điện thoại"
+                                    value={consultationInfo.user_phone}
+                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, user_phone: e.target.value })}
+
+                                />
+                            </>
+                        )}
+                        <select
+                            id="schedule"
+                            value={consultationInfo.schedule_id}
+                            onChange={(e) =>
+                                setConsultationInfo({ ...consultationInfo, schedule_id: e.target.value })
+                            }
+                            required
+                        >
+                            <option value="">Chọn lịch...</option>
+                            {schedules.map((schedule) => (
+                                <option key={schedule.schedule_id} value={schedule.schedule_id}>
+                                    {format(new Date(schedule.consultation_time), "dd/MM/yyyy HH:mm:ss")}
+                                </option>
+                            ))}
+                        </select>
+                        <textarea
+                            placeholder="Thông tin cần tư vấn"
+                            value={consultationInfo.consulting_information}
+                            onChange={(e) => setConsultationInfo({ ...consultationInfo, consulting_information: e.target.value })}
+                            required
+                        ></textarea>
+                        <button type="submit">Đăng ký tư vấn</button>
+                    </form>
+                </div>
+            </div>
+
+            {/* Phần 7: Đánh giá của người dùng */}
             <div className="user-reviews">
                 <div className='user-reviews-title'>
-                    <h3>Đánh Giá Từ Người Dùng</h3>
-                    <button onClick={openReviewModal}>Đánh Giá</button>
+                    <h3>Hỏi đáp</h3>
+                    <button onClick={openReviewModal}>Gửi Bình Luận</button>
                 </div>
-                {userReviews.slice(0, visibleReviews).map((review, index) => (
-                    <div key={index} className="review-item">
+                {comments.roots.slice(0, visibleReviews).map((review) => (
+                    <div key={review.review_id} className="review-item">
+                        {/* Hiển thị bình luận gốc */}
                         <strong>{review.username}</strong>
                         <p>Ngành: {review.majorName}</p>
-                        <p>Ưu điểm: {review.pros}</p>
-                        <p>Nhược điểm: {review.cons}</p>
+                        <p>{review.content}</p>
+                        <button onClick={() => handleReplyClick(review.review_id)}>Bình luận</button>
+
+                        {/* Hiển thị form phản hồi nếu cần */}
+                        {replies[review.review_id] && (
+                            <div className="reply-form">
+                                <textarea
+                                    placeholder="Nhập bình luận của bạn..."
+                                    value={currentReply}
+                                    onChange={(e) => setCurrentReply(e.target.value)}
+                                />
+                                <button onClick={() => handleSendReply(review.review_id, review.major_id)}>Gửi</button>
+                            </div>
+                        )}
+
+                        {/* Đệ quy để hiển thị các phản hồi */}
+                        {renderReplies(review.review_id)}
                     </div>
                 ))}
                 {visibleReviews < userReviews.length && (
@@ -324,83 +543,34 @@ const TuyenSinhDetail = () => {
                         <form onSubmit={submitReview}>
                             <select
                                 value={reviewInfo.major_id}
-                                onChange={(e) => setReviewInfo({ ...reviewInfo, major_id: e.target.value })}
+                                onChange={(e) => {
+                                    const newMajorId = e.target.value;
+                                    console.log(e.target.value);
+                                    setReviewInfo(current => {
+                                        const updated = { ...current, major_id: newMajorId };
+                                        return updated;
+                                    });
+                                }}
                             >
-                                {/* Các lựa chọn ngành, ví dụ */}
+                                <option value="">Chọn ngành...</option>
                                 {majors.map((major) => (
-                                    <option value={major.major_id}>{major.major_name}</option>
+                                    <option key={major.major_id} value={major.major_id}>{major.major_name}</option>
                                 ))}
                             </select>
                             <textarea
-                                placeholder="Ưu điểm"
-                                value={reviewInfo.pros}
-                                onChange={(e) => setReviewInfo({ ...reviewInfo, pros: e.target.value })}
+                                placeholder="Câu hỏi của bạn"
+                                value={reviewInfo.content}
+                                onChange={(e) => setReviewInfo({ ...reviewInfo, content: e.target.value })}
                             ></textarea>
-                            <textarea
-                                placeholder="Nhược điểm"
-                                value={reviewInfo.cons}
-                                onChange={(e) => setReviewInfo({ ...reviewInfo, cons: e.target.value })}
-                            ></textarea>
-                            <button type="submit">Gửi Đánh Giá</button>
+                            <button type="submit">Gửi</button>
                         </form>
 
                     </div>
                 </div>
             )}
 
-            {/* Phần 7: Đăng ký tư vấn */}
-            <div className="registration-section">
-                <div className="university-image">
-                    <img src={universityData.coverImage} alt="Ảnh trường" />
-                </div>
-                <div className="registration-form">
-                    <h3>Đăng Ký Tư Vấn</h3>
-                    <form onSubmit={handleConsultationSubmit}>
-                        {!isLoggedIn && (
-                            <>
-                                <input
-                                    type="text"
-                                    placeholder="Tên của bạn"
-                                    value={consultationInfo.consultation_name}
-                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, consultation_name: e.target.value })}
-
-                                />
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={consultationInfo.consultation_email}
-                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, consultation_email: e.target.value })}
-
-                                />
-                                <input
-                                    type="tel"
-                                    placeholder="Số điện thoại"
-                                    value={consultationInfo.consultation_phone}
-                                    onChange={(e) => setConsultationInfo({ ...consultationInfo, consultation_phone: e.target.value })}
-
-                                />
-                            </>
-                        )}
-                        <select
-                            value={consultationInfo.major_id}
-                            onChange={(e) => setConsultationInfo({ ...consultationInfo, major_id: e.target.value })}
-                            required
-                        >
-                            <option value="">Chọn ngành cần tư vấn</option>
-                            {majors.map((major) => (
-                                <option key={major.major_id} value={major.major_id}>{major.major_name}</option>
-                            ))}
-                        </select>
-                        <textarea
-                            placeholder="Thông tin cần tư vấn"
-                            value={consultationInfo.consulting_information}
-                            onChange={(e) => setConsultationInfo({ ...consultationInfo, consulting_information: e.target.value })}
-                            required
-                        ></textarea>
-                        <button type="submit">Đăng ký tư vấn</button>
-                    </form>
-                </div>
-            </div>
+            <df-messenger intent="WELCOME" chat-title="Hệ thống tư vấn tuyển sinh" agent-id="b9d16e35-2a47-4d31-b5b8-8844913cf5d4"
+                language-code="en"></df-messenger>
         </div>
     );
 }

@@ -4,6 +4,7 @@
     margin: auto;
     max-width: 900px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 600px; /* Set a minimum height */
 }
 
 .user-account-sidebar {
@@ -53,4 +54,105 @@
     flex-grow: 1;
     padding: 20px;
     background: #fff;
+}
+
+.consultations-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto; /* Allows scrolling within the container if content overflows */
+}
+
+.consultation-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.consultation-item h3 {
+    margin-top: 0;
+}
+
+.consultation-item p {
+    margin: 5px 0;
+}
+
+.consultation-item a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.consultation-item a:hover {
+    text-decoration: underline;
+}
+
+.followed-universities-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.university-followed-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.university-followed-card h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.university-followed-card p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.university-followed-card a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.university-followed-card a:hover {
+    text-decoration: underline;
+}
+
+.change-password-container {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.change-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.change-password-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.change-password-form button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease background-color;
+}
+
+.change-password-form button:hover {
+    background-color: #0056b3;
 }

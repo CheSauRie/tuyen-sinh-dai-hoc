@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../css/Navbar.css'; // Đảm bảo đường dẫn đến file CSS đúng
+import socketIOClient from "socket.io-client";
+import '../css/Navbar.css';
 import LOGO from '../img/logoq.png'
 import LogoutIcon from '../img/logout.svg';
+
+const ENDPOINT = "http://localhost:2000"
 const Navbar = () => {
     const [userName, setUserName] = useState('');
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [notificationCount, setNotificationCount] = useState(0);
+
     useEffect(() => {
         const checkLoginStatus = () => {
             const token = localStorage.getItem('token');
@@ -55,7 +60,8 @@ const Navbar = () => {
         setUserLoggedIn(false);
         setUserName('');
         setIsAdmin(false);
-        navigate('/truong-dai-hoc'); // Hoặc chuyển hướng đến trang bạn muốn sau khi đăng xuất
+        navigate('/truong-dai-hoc');
+        window.dispatchEvent(new CustomEvent('user-logged-out'));
     };
 
     const toggleDropdown = () => setShowDropdown(!showDropdown);
@@ -82,7 +88,7 @@ const Navbar = () => {
                 {userLoggedIn ? (
                     <div className="user-info-dropdown">
                         <button className="dropdown-toggle" onClick={toggleDropdown}>
-                            Chào {userName} {/* Sử dụng button để handle click */}
+                            Chào {userName} {notificationCount > 0 && `(${notificationCount})`}
                         </button>
                         {showDropdown && (
                             <div className="dropdown-menu">

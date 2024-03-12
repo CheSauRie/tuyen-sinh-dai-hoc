@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import "../css/ManageUniversities.css"
 import MarkdownEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+
 const ManageUniversities = () => {
     const [universities, setUniversities] = useState([]);
     const navigate = useNavigate();
@@ -78,8 +81,9 @@ const ManageUniversities = () => {
             setAdmissionsMethod('');
             setDescriptionMajor("");
             setQuota("")
+            alert("Thêm thành công")
         } else {
-            // Xử lý lỗi
+            alert("Lỗi")
         }
     };
 
@@ -103,8 +107,12 @@ const ManageUniversities = () => {
                             <td>{uni.address}</td>
                             <td>
                                 {/* <button onClick={() => handleDelete(uni.uni_id)}>Xóa</button> */}
-                                <button className="manage-uni-button" onClick={() => openAddMajorModal(uni.uni_id)}>Thêm Ngành</button>
-                                <button className="manage-uni-button" onClick={() => navigate(`/admin/university/${uni.uni_code}`)}>Chi Tiết</button>
+                                <button className="manage-uni-button" onClick={() => openAddMajorModal(uni.uni_id)} title="Thêm Ngành">
+                                    <FontAwesomeIcon icon={faPlus} />
+                                </button>
+                                <button className="manage-uni-button" onClick={() => navigate(`/admin/university/${uni.uni_code}`)} title="Chi Tiết">
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                </button>
                             </td>
                         </tr>
                     ))}

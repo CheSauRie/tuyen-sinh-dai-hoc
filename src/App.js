@@ -44,6 +44,7 @@ const App = () => {
         {/* <Footer /> */}
       </Router>
       <ToastContainer />
+
     </div>
 
   );

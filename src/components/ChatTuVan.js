@@ -11,6 +11,9 @@ const ChatTuVan = () => {
     const [questionHistory, setQuestionHistory] = useState([]);
     const [isNewChat, setIsNewChat] = useState(true);
     const navigate = useNavigate();
+    const [highlightedQuestionId, setHighlightedQuestionId] = useState(null);
+    const [highlightTimeoutId, setHighlightTimeoutId] = useState(null);
+
     useEffect(() => {
         const fetchChats = async () => {
             const token = localStorage.getItem('token'); // Lấy token
@@ -40,7 +43,13 @@ const ChatTuVan = () => {
         }
         fetchChats();
     }, [navigate]);
-
+    useEffect(() => {
+        return () => {
+            if (highlightTimeoutId) {
+                clearTimeout(highlightTimeoutId);
+            }
+        };
+    }, [highlightTimeoutId]);
     // Hàm lấy chi tiết của 1 đoạn chat
     const fetchChatDetails = async (chatId) => {
         try {
@@ -142,9 +151,6 @@ const ChatTuVan = () => {
         }
 
         if (currentChatId) {
-            // const newChatEntry = { id: Date.now(), question, answer: 'Đang chờ phản hồi...', isLoading: true };
-            // setSelectedChatDetails(chatHistory => [...chatHistory, newChatEntry]);
-
             try {
                 const response = await fetch('http://localhost:2000/api/v1/chat/create-message', {
                     method: 'POST',
@@ -158,9 +164,12 @@ const ChatTuVan = () => {
                 const responseData = await response.json();
                 if (responseData) {
                     handleServerResponse({ ...responseData, tempId });
+                    setQuestionHistory(prevChats => [...prevChats, {
+                        summary: responseData.summary,
+                    }]);
                     setQuestion('');
                 } else {
-                    console.error('Lỗi khi gửi câu hỏi:', responseData.message); // Giả sử API trả về thông điệp lỗi trong responseData.message
+                    console.error('Lỗi khi gửi câu hỏi:', responseData.message);
                 }
             } catch (error) {
                 console.error('Lỗi khi kết nối với API:', error);
@@ -170,12 +179,25 @@ const ChatTuVan = () => {
     };
 
     const handleQuestionClick = (messageId) => {
+        // setHighlightedQuestionId(messageId);
         const questionElement = document.getElementById(`chat_${messageId}`);
         if (questionElement) {
             questionElement.scrollIntoView({
                 behavior: 'smooth',
                 block: 'nearest'
             });
+
+            // Clear timeout trước đó nếu có
+            if (highlightTimeoutId) {
+                clearTimeout(highlightTimeoutId);
+            }
+
+            // Đặt timeout mới để highlight câu hỏi sau khi đã scroll
+            const newTimeoutId = setTimeout(() => {
+                setHighlightedQuestionId(messageId);
+            }, 500); // Đặt thời gian chờ là 500ms, tương ứng với thời gian scroll
+
+            setHighlightTimeoutId(newTimeoutId);
         }
     };
 
@@ -212,7 +234,7 @@ const ChatTuVan = () => {
                 <div className="chat-messages">
                     {selectedChatDetails.map((detail) => (
                         <div key={detail.message_id} id={`chat_${detail.message_id}`} >
-                            <p className="chat-message-question"><strong>Bạn:</strong> {detail.question}</p>
+                            <p className={`chat-message-question ${highlightedQuestionId === detail.message_id ? 'highlighted-question' : ''}`}><strong>Bạn:</strong> {detail.question}</p>
                             <p className="chat-message-answer"><strong>Phản hồi:</strong> {detail.isLoading ? <span className="loading-animation"></span> : detail.answer}</p>
                         </div>
                     ))}

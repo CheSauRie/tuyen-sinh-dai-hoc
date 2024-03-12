@@ -55,6 +55,21 @@ tr:nth-child(even) {
     background-color: #f44336; /* Red */
 }
 
+.add-major-modal {
+    display: flex; /* Cho phép sử dụng flexbox */
+    justify-content: center; /* Căn giữa theo trục ngang */
+    align-items: center; /* Căn giữa theo trục dọc */
+    position: fixed; /* Vị trí fixed để luôn nằm trên mọi nội dung */
+    top: 0;
+    left: 0;
+    width: 100%; /* Chiều rộng đầy đủ */
+    height: 100%; /* Chiều cao đầy đủ */
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền semi-transparent */
+    z-index: 1000; /* Đảm bảo modal nằm trên các phần tử khác */
+    padding-top: 5vh; /* Thêm một chút không gian ở phía trên modal */
+    padding-bottom: 5vh; /* Thêm một chút không gian ở phía dưới modal */
+}
+
 .add-major-modal .modal-content {
     background-color: #ffffff;
     padding: 20px;
@@ -62,6 +77,10 @@ tr:nth-child(even) {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: auto;
     max-width: 600px;
+    margin: auto; /* Đây giúp căn giữa nội dung nếu không sử dụng flexbox */
+    transition: all 0.3s ease-in-out;
+    overflow-y: auto; /* Cho phép cuộn nội dung theo chiều dọc nếu cần */
+    max-height: 90vh; /* Giới hạn chiều cao tối đa của nội dung modal */
 }
 
 .add-major-modal .close-modal {
@@ -94,9 +113,29 @@ tr:nth-child(even) {
 .add-major-modal button[type="submit"] {
     margin-top: 15px;
 }
+/* Ẩn scrollbar trên WebKit browsers */
+.add-major-modal .modal-content::-webkit-scrollbar {
+    display: none; /* ẩn scrollbar trên WebKit browsers */
+}
 
 .md-editor {
     margin-bottom: 20px;
+}
+.manage-uni-button {
+    background: none;
+    border: none;
+    color: #4caf50; /* Màu sắc của icon */
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.3s ease;
+}
+
+.manage-uni-button:hover {
+    color: #388e3c;
+}
+
+.manage-uni-button .fa-icon {
+    font-size: 1.2em; /* Hoặc bất kỳ kích thước nào bạn muốn */
 }
 
 @media screen and (max-width: 600px) {

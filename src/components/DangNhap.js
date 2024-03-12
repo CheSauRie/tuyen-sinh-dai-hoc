@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Modal from 'react-modal';
@@ -11,6 +11,11 @@ const DangNhap = () => {
     const [resetEmail, setResetEmail] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate('/truong-dai-hoc')
+        }
+    }, []); // Chỉ re-run khi activeTab thay đổi
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -34,7 +39,7 @@ const DangNhap = () => {
                 } else {
                     const locationState = location.state || {};
                     const redirectTo = locationState.from || '/';
-                    navigate(redirectTo);
+                    navigate('/truong-dai-hoc');
                 }
                 toast.success("Đăng nhập thành công");
             } else {

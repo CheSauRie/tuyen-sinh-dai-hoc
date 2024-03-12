@@ -171,3 +171,19 @@
         order: -1; /* Đưa các cột này lên trên cùng trên màn hình nhỏ */
     }
 }
+
+@keyframes blink {
+    0%,
+    100% {
+        background-color: transparent;
+        border-left-color: transparent;
+    }
+    50% {
+        background-color: #ffff99;
+        border-left-color: #ffeb3b;
+    }
+}
+
+.highlighted-question {
+    animation: blink 0.5s;
+}

@@ -32,7 +32,10 @@
 }
 
 .consultation-management__table td:nth-child(1) {
-    width: 50px;
+    width: 350px;
+}
+.consultation-management__table td:nth-child(4) {
+    width: 90px;
 }
 
 .consultation-management__table tr:hover {
@@ -47,6 +50,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 2px;
 }
 
 .consultation-management__update-btn:hover {
@@ -71,6 +75,8 @@
     border: 1px solid #888;
     width: 80%;
     max-width: 500px;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .update-modal-close {
@@ -104,8 +110,64 @@
     border: none;
     cursor: pointer;
     width: 100%;
+    border-radius: 4px;
 }
 
 .update-consultation-button:hover {
     opacity: 0.8;
+}
+
+.update-modal input {
+    width: 95%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.add-schedule-btn {
+    margin-bottom: 10px;
+    padding: 8px 16px;
+    background-color: #007bff; /* Màu xanh dương */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-schedule-btn:hover {
+    background-color: #0056b3; /* Màu tối hơn khi hover */
+}
+.consultation-management__icon-btn {
+    background: none;
+    border: none;
+    color: #4caf50; /* Màu sắc của icon */
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.3s ease;
+}
+
+.consultation-management__icon-btn:hover {
+    color: #388e3c; /* Màu khi hover */
+}
+
+/* Tăng kích thước icon nếu cần */
+.consultation-management__icon-btn .fa-icon {
+    font-size: 1.2em;
+}
+
+.consultation-management__search {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.consultation-management__search input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }

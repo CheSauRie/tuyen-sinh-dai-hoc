@@ -1,9 +1,9 @@
 /* DiemThi.css */
 .diem-thi-wrapper {
-    padding: 1rem;
+    padding: 2rem;
     max-width: 800px; /* Giới hạn kích thước tối đa của container */
     margin: 20px auto;
-    background-color: #f8f9fa; /* Màu nền nhẹ */
+    /* background-color: #f8f9fa; Màu nền nhẹ */
     border-radius: 8px; /* Bo tròn góc */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Thêm bóng */
 }

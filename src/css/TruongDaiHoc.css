@@ -57,18 +57,16 @@
 }
 
 .university-card {
-    width: 364px; /* Đặt chiều rộng cố định */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex; /* Sử dụng flex để căn chỉnh nội dung bên trong card */
     flex-direction: column; /* Sắp xếp nội dung theo chiều dọc */
     align-items: center; /* Căn giữa các item theo chiều ngang */
-    justify-content: center; /* Căn giữa các item theo chiều dọc */
-    padding: 15px;
+    justify-content: space-between; /* Căn giữa các item theo chiều dọc */
     background-color: white; /* Card background */
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Stronger shadow for prominence */
     transition: transform 0.2s; /* Smooth scaling on hover */
+    height: 100%;
 }
 
 .university-card:hover {
@@ -85,6 +83,7 @@
 .university-info {
     padding: 15px;
     text-align: center; /* Center align text */
+    flex-grow: 1;
 }
 
 .university-logo {

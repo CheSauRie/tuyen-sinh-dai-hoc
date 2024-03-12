@@ -1,21 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../css/UniversityDetail.css';
-import UET from "../img/UET.png"
+import UET from "../img/UET.png";
+import StatisticsModal from '../Modal/StatisticsModal';
+
 const UniversityDetail = () => {
-    const universityDetails = {
+    const { code } = useParams();
+    const [admissionScores, setAdmissionScores] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedMajor, setSelectedMajor] = useState({ uniCode: '', majorCode: '' });
+
+    const [universityDetails, setUniversityDetails] = useState({
         name: "Tên Trường Đại Học",
         address: "Địa chỉ của trường",
         phone: "Số điện thoại",
         website: "Website",
         email: "Email",
+    });
+
+    // Hàm để gọi API và lấy dữ liệu
+    const fetchUniversityData = async () => {
+        try {
+            const response = await fetch(`http://localhost:2000/api/v1/admin/score/${code}/majors`);
+            const data = await response.json();
+            // Xử lý dữ liệu nhận được từ API
+            const scores = data.map((item, index) => ({
+                id: index,
+                major: item.major_name,
+                majorCode: item.major_code,
+                score: item.admission_score,
+                subjectCombination: item.subject_group,
+            }));
+            setAdmissionScores(scores);
+            // Cập nhật thông tin trường đại học nếu API hỗ trợ
+            // setUniversityDetails({ ... });
+        } catch (error) {
+            console.error("Failed to fetch data: ", error);
+        }
     };
 
-    // Dữ liệu giả định cho điểm chuẩn
-    const admissionScores = [
-        { id: 1, major: "Ngành A", majorCode: "001", score: 25, subjectCombination: "Toán, Lý, Hóa" },
-        // Thêm các ngành khác tại đây
-    ];
+    useEffect(() => {
+        fetchUniversityData(); // Gọi hàm khi component được render hoặc khi 'code' thay đổi
+    }, [code]);
+
+
+    const openModal = (uniCode, majorCode) => {
+        setSelectedMajor({ uniCode, majorCode });
+        setIsModalOpen(true);
+    };
 
     return (
         <div className="university-detail-container">
@@ -28,7 +60,6 @@ const UniversityDetail = () => {
                     <p>Email: {universityDetails.email}</p>
                 </div>
                 <div className='university-logo-unidetail'>
-                    {/* Logo của trường */}
                     <img src={UET} alt="Logo Trường" />
                 </div>
             </div>
@@ -52,7 +83,10 @@ const UniversityDetail = () => {
                     </thead>
                     <tbody>
                         {admissionScores.map((score, index) => (
-                            <tr key={score.id}>
+                            <tr key={score.id}
+                                onClick={() => openModal(code, score.majorCode)}
+                                style={{ cursor: 'pointer' }}
+                            >
                                 <td>{index + 1}</td>
                                 <td>{score.major}</td>
                                 <td>{score.majorCode}</td>
@@ -60,8 +94,15 @@ const UniversityDetail = () => {
                                 <td>{score.subjectCombination}</td>
                             </tr>
                         ))}
+
                     </tbody>
                 </table>
+                <StatisticsModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    uniCode={selectedMajor.uniCode}
+                    majorCode={selectedMajor.majorCode}
+                />
             </div>
         </div>
     );

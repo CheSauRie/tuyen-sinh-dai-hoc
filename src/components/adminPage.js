@@ -4,6 +4,7 @@ import "../css/adminPage.css";
 import MarkdownEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
+import { toast } from 'react-toastify';
 
 const AdminPage = () => {
     const navigate = useNavigate();
@@ -76,6 +77,7 @@ const AdminPage = () => {
 
         if (response.ok) {
             console.log('Data successfully saved');
+            toast.success("Thêm thành công")
         } else {
             console.error('Failed to save data');
         }

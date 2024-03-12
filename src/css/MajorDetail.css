@@ -8,7 +8,9 @@
 }
 
 .row.header {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
     align-items: center;
     padding: 20px;
     background-color: #f8f9fa; /* Màu nền cho header */
@@ -20,6 +22,8 @@
     margin-right: 20px;
     border-radius: 5px; /* Làm mềm các góc */
     object-fit: contain;
+    display: block;
+    right: 30px;
 }
 
 .name-info h2 {

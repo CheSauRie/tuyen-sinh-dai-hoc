@@ -18,11 +18,11 @@ const ConsultationManagement = () => {
     const [universities, setUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-
+    const baseURL = "http://localhost:2000/";
     useEffect(() => {
         const fetchConsultation = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/user/consultation-schedule`);
+                const response = await fetch(`${baseURL}api/v1/user/consultation-schedule`);
                 if (response.ok) {
                     const data = await response.json();
                     setConsultations(data);
@@ -58,7 +58,7 @@ const ConsultationManagement = () => {
             meet_url: newMeetUrl,
         };
         try {
-            const response = await fetch(`http://localhost:2000/api/v1/user/consultation-schedule/${selectedConsultation}`, {
+            const response = await fetch(`${baseURL}api/v1/user/consultation-schedule/${selectedConsultation}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const ConsultationManagement = () => {
     };
     const handleAddSchedule = async () => {
         try {
-            const response = await fetch('http://localhost:2000/api/v1/admin/universities', {
+            const response = await fetch(`${baseURL}api/v1/admin/universities`, {
                 method: 'GET',
                 headers: {
                     'token': `${localStorage.getItem('token')}`,
@@ -119,7 +119,7 @@ const ConsultationManagement = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/consultation-schedule', {
+            const response = await fetch(`${baseURL}api/v1/user/consultation-schedule`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const ConsultationManagement = () => {
     const handleDeleteSchedule = async (scheduleId) => {
         if (window.confirm("Bạn có chắc xóa lịch này")) {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/user/consultation-schedule/${scheduleId}`, {
+                const response = await fetch(`${baseURL}api/v1/user/consultation-schedule/${scheduleId}`, {
                     method: 'DELETE',
                 });
 

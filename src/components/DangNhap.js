@@ -11,6 +11,7 @@ const DangNhap = () => {
     const [resetEmail, setResetEmail] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
+    const baseURL = "http://localhost:2000/";
     useEffect(() => {
         if (localStorage.getItem('token')) {
             navigate('/truong-dai-hoc')
@@ -20,7 +21,7 @@ const DangNhap = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/login', {
+            const response = await fetch(`${baseURL}api/v1/user/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,7 +44,7 @@ const DangNhap = () => {
                 }
                 toast.success("Đăng nhập thành công");
             } else {
-                toast.error("Đăng nhập thất bại: Kiểm tra lại tài khoản và mật khẩu");
+                toast.error("Đăng nhập thất bại: " + data.message);
                 console.error('Đăng nhập thất bại:', data.message);
             }
         } catch (error) {
@@ -62,7 +63,7 @@ const DangNhap = () => {
     const handleResetPassword = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/request-reset-password', {
+            const response = await fetch(`${baseURL}api/v1/user/request-reset-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

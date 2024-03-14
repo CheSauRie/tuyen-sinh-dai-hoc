@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 const AdminPage = () => {
     const navigate = useNavigate();
     const mdParser = new MarkdownIt();
+    const baseURL = "http://localhost:2000/";
     const [uniInfo, setUniInfo] = useState({
         uni_code: '',
         uni_name: '',
@@ -70,7 +71,7 @@ const AdminPage = () => {
             if (images[key]) formData.append(key, images[key]);
         });
         // Gửi FormData đến server
-        const response = await fetch('http://localhost:2000/api/v1/admin/universities', {
+        const response = await fetch(`${baseURL}api/v1/admin/universities`, {
             method: 'POST',
             body: formData
         });

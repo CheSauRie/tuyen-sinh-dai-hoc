@@ -9,7 +9,7 @@ const UniversityDetail = () => {
     const [admissionScores, setAdmissionScores] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMajor, setSelectedMajor] = useState({ uniCode: '', majorCode: '' });
-
+    const baseURL = "http://localhost:2000/";
     const [universityDetails, setUniversityDetails] = useState({
         name: "Tên Trường Đại Học",
         address: "Địa chỉ của trường",
@@ -21,7 +21,7 @@ const UniversityDetail = () => {
     // Hàm để gọi API và lấy dữ liệu
     const fetchUniversityData = async () => {
         try {
-            const response = await fetch(`http://localhost:2000/api/v1/admin/score/${code}/majors`);
+            const response = await fetch(`${baseURL}api/v1/admin/score/${code}/majors`);
             const data = await response.json();
             // Xử lý dữ liệu nhận được từ API
             const scores = data.map((item, index) => ({
@@ -40,7 +40,7 @@ const UniversityDetail = () => {
     };
 
     useEffect(() => {
-        fetchUniversityData(); // Gọi hàm khi component được render hoặc khi 'code' thay đổi
+        fetchUniversityData();
     }, [code]);
 
 

@@ -9,9 +9,9 @@ const DiemThi = () => {
     const [showProvinces, setShowProvinces] = useState(false);
     const [visibleUniversities, setVisibleUniversities] = useState(20);
     const navigate = useNavigate();
-
+    const baseURL = "http://localhost:2000/";
     useEffect(() => {
-        fetch('http://localhost:2000/api/v1/admin/score/universities')
+        fetch(`${baseURL}api/v1/admin/score/universities`)
             .then(response => response.json())
             .then(data => {
                 const formattedData = data.map(uni => ({

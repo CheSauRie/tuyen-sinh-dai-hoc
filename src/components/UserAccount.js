@@ -10,7 +10,7 @@ const UserAccount = () => {
     const [consultations, setConsultations] = useState([]);
     const formRef = useRef();
     const navigate = useNavigate();
-
+    const baseURL = "http://localhost:2000/";
     const handleUniversityClick = (uniCode) => {
         navigate(`/truong-dai-hoc/${uniCode}`); // Navigate to the university page
     };
@@ -26,7 +26,7 @@ const UserAccount = () => {
 
     const fetchFollowedUniversities = async () => {
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/follow', {
+            const response = await fetch(`${baseURL}api/v1/user/follow`, {
                 headers: {
                     "token": `${localStorage.getItem('token')}`
                 },
@@ -40,7 +40,7 @@ const UserAccount = () => {
 
     const fetchConsultations = async () => {
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/consultation-request', {
+            const response = await fetch(`${baseURL}api/v1/user/consultation-request`, {
                 headers: {
                     "token": `${localStorage.getItem('token')}`
                 },
@@ -67,7 +67,7 @@ const UserAccount = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/change-password', {
+            const response = await fetch(`${baseURL}api/v1/user/change-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

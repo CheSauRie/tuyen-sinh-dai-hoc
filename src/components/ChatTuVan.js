@@ -13,12 +13,12 @@ const ChatTuVan = () => {
     const navigate = useNavigate();
     const [highlightedQuestionId, setHighlightedQuestionId] = useState(null);
     const [highlightTimeoutId, setHighlightTimeoutId] = useState(null);
-
+    const baseURL = "http://localhost:2000/";
     useEffect(() => {
         const fetchChats = async () => {
             const token = localStorage.getItem('token'); // Lấy token
             try {
-                const response = await fetch('http://localhost:2000/api/v1/chat/get-chat', {
+                const response = await fetch(`${baseURL}api/v1/chat/get-chat`, {
                     method: 'GET',
                     headers: {
                         'token': `${token}`,
@@ -53,7 +53,7 @@ const ChatTuVan = () => {
     // Hàm lấy chi tiết của 1 đoạn chat
     const fetchChatDetails = async (chatId) => {
         try {
-            const url = new URL('http://localhost:2000/api/v1/chat/detail-message');
+            const url = new URL(`${baseURL}api/v1/chat/detail-message`);
             url.searchParams.append('chat_id', chatId);
 
             const response = await fetch(url, {
@@ -80,7 +80,7 @@ const ChatTuVan = () => {
     const handleDeleteChat = async (chatId) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:2000/api/v1/chat/delete-chat?chat_id=${chatId}`, {
+            const response = await fetch(`${baseURL}api/v1/chat/delete-chat?chat_id=${chatId}`, {
                 method: 'DELETE',
                 headers: {
                     'token': `${token}`,
@@ -127,7 +127,7 @@ const ChatTuVan = () => {
         setSelectedChatDetails(prev => [...prev, { tempId, question, answer: 'Đang chờ phản hồi...', isLoading: true }]);
         if (isNewChat) {
             try {
-                const response = await fetch('http://localhost:2000/api/v1/chat/create-chat', {
+                const response = await fetch(`${baseURL}api/v1/chat/create-chat`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ const ChatTuVan = () => {
 
         if (currentChatId) {
             try {
-                const response = await fetch('http://localhost:2000/api/v1/chat/create-message', {
+                const response = await fetch(`${baseURL}api/v1/chat/create-message`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

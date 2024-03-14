@@ -1,6 +1,6 @@
 /* DiemThi.css */
 .diem-thi-wrapper {
-    padding: 2rem;
+    padding: 32px;
     max-width: 800px; /* Giới hạn kích thước tối đa của container */
     margin: 20px auto;
     /* background-color: #f8f9fa; Màu nền nhẹ */
@@ -10,7 +10,7 @@
 
 .diem-thi-wrapper h1 {
     color: #007bff; /* Màu sắc cho tiêu đề */
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
 }
 
 .diem-thi-search-btn:hover {
@@ -19,12 +19,12 @@
 
 .diem-thi-province-btns {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
 }
 
 .diem-thi-province-btn {
-    margin: 0.5rem;
-    padding: 0.5rem 1rem;
+    margin: 8px;
+    padding: 8px 16px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -39,22 +39,22 @@
 .diem-thi-dropdown-provinces {
     display: none; /* Ẩn mặc định */
     background-color: #f1f1f1;
-    padding: 1rem;
+    padding: 16px;
     border: 1px solid #ddd;
     border-radius: 8px; /* Bo tròn góc */
-    margin-top: 0.5rem; /* Khoảng cách từ các nút */
+    margin-top: 8px; /* Khoảng cách từ các nút */
 }
 
 .diem-thi-university-list {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .diem-thi-university-item {
     width: 100%; /* Độ rộng tối đa */
-    margin: 0.5rem 0;
-    padding: 0.5rem;
+    margin: 8px 0;
+    padding: 8px;
     border: 1px solid #ddd;
     background-color: #fff;
     border-radius: 8px; /* Bo tròn góc */
@@ -72,11 +72,12 @@
 }
 
 .diem-thi-university-name {
-    flex-grow: 1; /* Cho phép tên trường chiếm dụng phần còn lại */
+    flex-grow: 1;
 }
 
 .diem-thi-load-more {
-    width: auto;
+    margin-top: 10px;
+    width: 81px;
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -99,19 +100,17 @@
     border-radius: 8px; /* Bo tròn góc */
 }
 
-/* DiemThi.css */
-
 /* Thêm container bọc ngoài cho search box và nút tìm kiếm */
 .diem-thi-search-container {
-    position: relative; /* Thiết lập vị trí tương đối để các elements bên trong có thể sử dụng absolute positioning */
+    position: relative; /*Thiết lập vị trí tương đối để các elements bên trong có thể sử dụng absolute positioning */
     max-width: 500px; /* Đặt chiều rộng tối đa */
     margin: auto; /* Căn giữa container */
-    margin-bottom: 1rem; /* Khoảng cách dưới cùng */
+    margin-bottom: 16px; /* Khoảng cách dưới cùng */
 }
 
 .diem-thi-search-box {
     width: calc(100% - 60px); /* Tính toán chiều rộng dựa trên chiều rộng của nút Tìm */
-    padding: 0.5rem;
+    padding: 8px;
     border: 2px solid #007bff; /* Đặt màu viền */
     border-radius: 20px; /* Bo tròn góc */
     outline: none; /* Bỏ đường viền khi focus */
@@ -124,7 +123,7 @@
     right: -20px; /* Đặt nút sát cạnh phải */
     top: 38%; /* Đưa nút lên vị trí giữa của container */
     transform: translateY(-50%); /* Điều chỉnh nút để nó ở chính giữa theo chiều dọc */
-    padding: 0.5rem 1rem; /* Đặt padding cho nút */
+    padding: 8px 16px; /* Đặt padding cho nút */
     background-color: #28a745; /* Màu nền cho nút */
     color: white;
     border: none;

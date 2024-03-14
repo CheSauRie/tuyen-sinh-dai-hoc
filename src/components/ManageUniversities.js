@@ -18,6 +18,7 @@ const ManageUniversities = () => {
     const [currentUniIdForNewMajor, setCurrentUniIdForNewMajor] = useState(null);
     const mdParser = new MarkdownIt();
     const [quota, setQuota] = useState('');
+    const baseURL = "http://localhost:2000/";
     const openAddMajorModal = (uniId) => {
         setCurrentUniIdForNewMajor(uniId);
         setShowAddMajorModal(true);
@@ -28,7 +29,7 @@ const ManageUniversities = () => {
     useEffect(() => {
         // Hàm lấy danh sách trường học từ server
         const fetchUniversities = async () => {
-            const response = await fetch('http://localhost:2000/api/v1/admin/universities');
+            const response = await fetch(`${baseURL}api/v1/admin/universities`);
             if (response.ok) {
                 const data = await response.json();
                 setUniversities(data.universities);
@@ -42,7 +43,7 @@ const ManageUniversities = () => {
 
     const handleDelete = async (uniId) => {
         // Gửi yêu cầu xóa trường học đến server
-        const response = await fetch(`http://localhost:2000/api/v1/admin/universities/${uniId}`, {
+        const response = await fetch(`${baseURL}api/v1/admin/universities/${uniId}`, {
             method: 'DELETE',
         });
 
@@ -57,7 +58,7 @@ const ManageUniversities = () => {
     const handleAddMajor = async (e) => {
         e.preventDefault();
         // Gửi yêu cầu thêm major mới đến server
-        const response = await fetch('http://localhost:2000/api/v1/admin/major', {
+        const response = await fetch(`${baseURL}api/v1/admin/major`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

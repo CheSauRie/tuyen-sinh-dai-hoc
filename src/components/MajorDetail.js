@@ -10,10 +10,11 @@ const MajorDetail = () => {
     const [universityData, setUniversityData] = useState({});
     const [otherMajors, setOtherMajors] = useState([]);
     const navigate = useNavigate();
+    const baseURL = "http://localhost:2000/";
     useEffect(() => {
         const fetchMajorDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/admin/major/${uni_code}`);
+                const response = await fetch(`${baseURL}api/v1/admin/major/${uni_code}`);
                 if (response.ok) {
                     const majors = await response.json();
                     const major = majors.find(m => m.major_name === major_name);
@@ -30,11 +31,11 @@ const MajorDetail = () => {
 
         const fetchUniversityDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/admin/universities/details/${uni_code}`);
+                const response = await fetch(`${baseURL}api/v1/admin/universities/details/${uni_code}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUniversityData({
-                        logo: `http://localhost:2000/${data.logo.replace(/\\/g, '/')}`
+                        logo: `${baseURL}${data.logo.replace(/\\/g, '/')}`
                     });
                 } else {
                     console.error("Failed to fetch university details");
@@ -45,7 +46,7 @@ const MajorDetail = () => {
         };
         const fetchOtherMajors = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/admin/major/${uni_code}`);
+                const response = await fetch(`${baseURL}api/v1/admin/major/${uni_code}`);
                 if (response.ok) {
                     const majors = await response.json();
                     const otherMajors = majors.filter(m => m.major_name !== major_name);

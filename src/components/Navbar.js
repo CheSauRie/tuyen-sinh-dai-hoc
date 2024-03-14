@@ -5,7 +5,7 @@ import '../css/Navbar.css';
 import LOGO from '../img/logoq.png'
 import LogoutIcon from '../img/logout.svg';
 
-const ENDPOINT = "http://localhost:2000"
+const baseURL = "http://localhost:2000/";
 const Navbar = () => {
     const [userName, setUserName] = useState('');
     const [userLoggedIn, setUserLoggedIn] = useState(false);

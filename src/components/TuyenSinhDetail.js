@@ -32,7 +32,7 @@ const TuyenSinhDetail = () => {
         replies: {} // là một object với key là parent_review_id và giá trị là một array của replies
     });
     const [showRepliesCount, setShowRepliesCount] = useState({});
-
+    const baseURL = "http://localhost:2000/";
     const handleShowMoreReplies = (parentId) => {
         setShowRepliesCount(prevState => ({
             ...prevState,
@@ -63,7 +63,7 @@ const TuyenSinhDetail = () => {
 
         const fetchUniversityDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/admin/universities/details/${uni_code}`);
+                const response = await fetch(`${baseURL}api/v1/admin/universities/details/${uni_code}`);
                 if (response.ok) {
                     const data = await response.json();
                     // Cập nhật trạng thái với thông tin chi tiết của trường đại học
@@ -71,8 +71,8 @@ const TuyenSinhDetail = () => {
                         name: data.uni_name,
                         address: data.address,
                         website: data.website,
-                        coverImage: `http://localhost:2000/${data.background.replace(/\\/g, '/')}`, // Đảm bảo đường dẫn đúng
-                        logo: `http://localhost:2000/${data.logo.replace(/\\/g, '/')}` // Đảm bảo đường dẫn đúng
+                        coverImage: data.background,
+                        logo: data.logo
                     });
                     setMission(data.mission)
                     const statsArray = data.description.split(", ");
@@ -81,7 +81,7 @@ const TuyenSinhDetail = () => {
                         return {
                             number: parts[0].trim(),
                             label: parts[1].trim(),
-                            color: getRandomColor() // Sử dụng hàm getRandomColor đã định nghĩa ở trên
+                            color: getRandomColor()
                         };
                     });
 
@@ -103,7 +103,7 @@ const TuyenSinhDetail = () => {
         };
         const fetchMajors = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/admin/major/${uni_code}`);
+                const response = await fetch(`${baseURL}api/v1/admin/major/${uni_code}`);
                 if (response.ok) {
                     const data = await response.json();
                     setMajors(data);
@@ -116,20 +116,11 @@ const TuyenSinhDetail = () => {
         };
         const fetchReviews = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/user/review/${uni_code}`);
+                const response = await fetch(`${baseURL}api/v1/user/review/${uni_code}`);
                 if (response.ok) {
 
                     const data = await response.json();
                     const roots = data.filter(review => review.parent_review_id === null);
-                    // const replies = {};
-                    // data.forEach(review => {
-                    //     if (review.parent_review_id !== null) {
-                    //         if (!replies[review.parent_review_id]) {
-                    //             replies[review.parent_review_id] = [];
-                    //         }
-                    //         replies[review.parent_review_id].push(review);
-                    //     }
-                    // });
                     const replies = data
                         .filter(review => review.parent_review_id)
                         .reduce((acc, reply) => {
@@ -159,7 +150,7 @@ const TuyenSinhDetail = () => {
         // Hàm lấy danh sách lịch tư vấn từ server
         const fetchSchedules = async () => {
             try {
-                const response = await fetch(`http://localhost:2000/api/v1/user/consultation-schedule/${uni_code}`);
+                const response = await fetch(`${baseURL}api/v1/user/consultation-schedule/${uni_code}`);
                 if (response.ok) {
                     const data = await response.json();
                     setSchedules(data);
@@ -176,7 +167,7 @@ const TuyenSinhDetail = () => {
 
     const fetchReviews = async () => {
         try {
-            const response = await fetch(`http://localhost:2000/api/v1/user/review/${uni_code}`);
+            const response = await fetch(`${baseURL}api/v1/user/review/${uni_code}`);
             if (response.ok) {
 
                 const data = await response.json();
@@ -203,7 +194,7 @@ const TuyenSinhDetail = () => {
             return alert('Vui lòng chọn một ngành.');
         }
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/add-review', {
+            const response = await fetch(`${baseURL}api/v1/user/add-review`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -236,7 +227,7 @@ const TuyenSinhDetail = () => {
 
     const handleConsultationSubmit = async (e) => {
         e.preventDefault();
-        const apiUrl = 'http://localhost:2000/api/v1/user/consultation-request';
+        const apiUrl = `${baseURL}api/v1/user/consultation-request`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -295,7 +286,7 @@ const TuyenSinhDetail = () => {
     const sendReplyToServer = async (reviewId, major_id, content) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:2000/api/v1/user/add-review', {
+            const response = await fetch(`${baseURL}api/v1/user/add-review`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

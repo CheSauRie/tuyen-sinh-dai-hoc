@@ -7,11 +7,11 @@ const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const location = useLocation();
     const token = new URLSearchParams(location.search).get('token');
-
+    const baseURL = "http://localhost:2000/";
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/reset-password', {
+            const response = await fetch(`${baseURL}api/v1/user/reset-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

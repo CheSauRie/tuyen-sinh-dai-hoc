@@ -9,7 +9,7 @@ const DangKy = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
-
+    const baseURL = "http://localhost:2000/";
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -19,7 +19,7 @@ const DangKy = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:2000/api/v1/user/register', {
+            const response = await fetch(`${baseURL}api/v1/user/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

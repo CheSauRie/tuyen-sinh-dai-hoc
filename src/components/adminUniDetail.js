@@ -11,14 +11,13 @@ const AdminUniDetail = () => {
     const navigate = useNavigate();
     const [university, setUniversity] = useState(null);
     const [majors, setMajors] = useState([]);
-
     const [selectedMajor, setSelectedMajor] = useState(null);
     const [editInfo, setEditInfo] = useState('');
     const [admissionsInfo, setAdmissionsInfo] = useState('');
     const [admissionsMethod, setAdmissionsMethod] = useState('');
     const [descriptionMajor, setDescriptionMajor] = useState('');
     const [quota, setQuota] = useState('');
-
+    const baseURL = "http://localhost:2000/";
     useEffect(() => {
         fetchUniversityDetails();
         fetchMajors();
@@ -26,7 +25,7 @@ const AdminUniDetail = () => {
 
     const fetchUniversityDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:2000/api/v1/admin/universities/details/${uni_code}`);
+            const response = await fetch(`${baseURL}api/v1/admin/universities/details/${uni_code}`);
             if (response.ok) {
                 const data = await response.json();
                 setUniversity(data);
@@ -40,7 +39,7 @@ const AdminUniDetail = () => {
 
     const fetchMajors = async () => {
         try {
-            const response = await fetch(`http://localhost:2000/api/v1/admin/major/${uni_code}`);
+            const response = await fetch(`${baseURL}api/v1/admin/major/${uni_code}`);
             if (response.ok) {
                 const data = await response.json();
                 setMajors(data)
@@ -83,7 +82,7 @@ const AdminUniDetail = () => {
                 description_major: descriptionMajor,
                 quota: parseInt(quota),
             };
-            const response = await fetch(`http://localhost:2000/api/v1/admin/major/${selectedMajor.major_id}`, {
+            const response = await fetch(`${baseURL}api/v1/admin/major/${selectedMajor.major_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

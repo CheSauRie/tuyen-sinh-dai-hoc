@@ -17,7 +17,7 @@ const AdminUniDetail = () => {
     const [admissionsMethod, setAdmissionsMethod] = useState('');
     const [descriptionMajor, setDescriptionMajor] = useState('');
     const [quota, setQuota] = useState('');
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         fetchUniversityDetails();
         fetchMajors();

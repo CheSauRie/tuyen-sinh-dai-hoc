@@ -9,7 +9,7 @@ const DangKy = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     const handleSubmit = async (event) => {
         event.preventDefault();
 

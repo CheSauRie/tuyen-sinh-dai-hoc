@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const AdminPage = () => {
     const navigate = useNavigate();
     const mdParser = new MarkdownIt();
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     const [uniInfo, setUniInfo] = useState({
         uni_code: '',
         uni_name: '',

@@ -10,7 +10,7 @@ const MajorDetail = () => {
     const [universityData, setUniversityData] = useState({});
     const [otherMajors, setOtherMajors] = useState([]);
     const navigate = useNavigate();
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         const fetchMajorDetails = async () => {
             try {

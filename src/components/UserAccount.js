@@ -10,7 +10,7 @@ const UserAccount = () => {
     const [consultations, setConsultations] = useState([]);
     const formRef = useRef();
     const navigate = useNavigate();
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     const handleUniversityClick = (uniCode) => {
         navigate(`/truong-dai-hoc/${uniCode}`); // Navigate to the university page
     };
@@ -21,7 +21,7 @@ const UserAccount = () => {
         } else if (activeTab === 'applications') {
             fetchConsultations();
         }
-    }, [activeTab]); // Chỉ re-run khi activeTab thay đổi
+    }, [activeTab]);
 
 
     const fetchFollowedUniversities = async () => {

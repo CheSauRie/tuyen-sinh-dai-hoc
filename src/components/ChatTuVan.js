@@ -13,7 +13,7 @@ const ChatTuVan = () => {
     const navigate = useNavigate();
     const [highlightedQuestionId, setHighlightedQuestionId] = useState(null);
     const [highlightTimeoutId, setHighlightTimeoutId] = useState(null);
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         const fetchChats = async () => {
             const token = localStorage.getItem('token'); // Lấy token
@@ -137,13 +137,13 @@ const ChatTuVan = () => {
                 });
                 const newChat = await response.json();
                 currentChatId = newChat.chat_id;
-                //Cập nhật chatSummary để thêm chat mới
                 setChatSummary(prevChats => [...prevChats, {
                     chat_id: newChat.chat_id,
                     summary: newChat.summary,
                     createdAt: new Date().toISOString()
                 }]);
-                setIsNewChat(false); // Đặt lại trạng thái isNewChat
+                setIsNewChat(false);
+                setQuestion('');
             } catch (error) {
                 console.error('Lỗi khi tạo chat mới:', error);
                 return;

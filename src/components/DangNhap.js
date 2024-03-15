@@ -11,12 +11,13 @@ const DangNhap = () => {
     const [resetEmail, setResetEmail] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         if (localStorage.getItem('token')) {
             navigate('/truong-dai-hoc')
         }
     }, []); // Chỉ re-run khi activeTab thay đổi
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();

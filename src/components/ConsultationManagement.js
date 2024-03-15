@@ -18,7 +18,7 @@ const ConsultationManagement = () => {
     const [universities, setUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         const fetchConsultation = async () => {
             try {

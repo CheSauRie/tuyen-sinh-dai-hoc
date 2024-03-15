@@ -18,7 +18,7 @@ const ManageUniversities = () => {
     const [currentUniIdForNewMajor, setCurrentUniIdForNewMajor] = useState(null);
     const mdParser = new MarkdownIt();
     const [quota, setQuota] = useState('');
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     const openAddMajorModal = (uniId) => {
         setCurrentUniIdForNewMajor(uniId);
         setShowAddMajorModal(true);

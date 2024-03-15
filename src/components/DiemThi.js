@@ -9,7 +9,7 @@ const DiemThi = () => {
     const [showProvinces, setShowProvinces] = useState(false);
     const [visibleUniversities, setVisibleUniversities] = useState(20);
     const navigate = useNavigate();
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         fetch(`${baseURL}api/v1/admin/score/universities`)
             .then(response => response.json())

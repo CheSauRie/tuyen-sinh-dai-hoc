@@ -32,7 +32,7 @@ const TuyenSinhDetail = () => {
         replies: {} // là một object với key là parent_review_id và giá trị là một array của replies
     });
     const [showRepliesCount, setShowRepliesCount] = useState({});
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     const handleShowMoreReplies = (parentId) => {
         setShowRepliesCount(prevState => ({
             ...prevState,

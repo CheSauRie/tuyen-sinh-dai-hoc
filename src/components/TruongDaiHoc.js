@@ -9,7 +9,7 @@ const TruongDaiHoc = () => {
     const navigate = useNavigate();
     const [universities, setUniversities] = useState([]);
     const [followedUniversities, setFollowedUniversities] = useState(new Set());
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         // Hàm lấy danh sách trường đại học từ API
         const fetchUniversities = async () => {

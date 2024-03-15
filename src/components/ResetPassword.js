@@ -7,7 +7,7 @@ const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const location = useLocation();
     const token = new URLSearchParams(location.search).get('token');
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

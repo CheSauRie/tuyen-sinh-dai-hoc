@@ -9,7 +9,7 @@ const UniversityDetail = () => {
     const [admissionScores, setAdmissionScores] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMajor, setSelectedMajor] = useState({ uniCode: '', majorCode: '' });
-    const baseURL = "http://localhost:2000/";
+    const baseURL = process.env.REACT_APP_BACKEND_URL;
     const [universityDetails, setUniversityDetails] = useState({
         name: "Tên Trường Đại Học",
         address: "Địa chỉ của trường",

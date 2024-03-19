@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import '../css/UniversityDetail.css';
 import UET from "../img/UET.png";
 import StatisticsModal from '../Modal/StatisticsModal';
-
+import ReactMarkdown from 'react-markdown';
 const UniversityDetail = () => {
     const { code } = useParams();
     const [admissionScores, setAdmissionScores] = useState([]);
@@ -16,6 +16,8 @@ const UniversityDetail = () => {
         phone: "Số điện thoại",
         website: "Website",
         email: "Email",
+        logo: '',
+        admission_method: "",
     });
 
     // Hàm để gọi API và lấy dữ liệu
@@ -39,8 +41,20 @@ const UniversityDetail = () => {
         }
     };
 
+    const fetchUni = async () => {
+        try {
+            const response = await fetch(`${baseURL}api/v1/admin/universities/details/${code}`);
+            const data = await response.json();
+            setUniversityDetails(data);
+            console.log(data);
+        } catch (error) {
+            console.error("Failed to fetch data: ", error);
+        }
+    }
+
     useEffect(() => {
         fetchUniversityData();
+        fetchUni();
     }, [code]);
 
 
@@ -60,13 +74,13 @@ const UniversityDetail = () => {
                     <p>Email: {universityDetails.email}</p>
                 </div>
                 <div className='university-logo-unidetail'>
-                    <img src={UET} alt="Logo Trường" />
+                    <img src={universityDetails.logo} alt="Logo trường" />
                 </div>
             </div>
 
             <div className="university-admission">
                 <h2>Phương Thức Tuyển Sinh 2023</h2>
-                {/* Nội dung markdown từ database */}
+                <ReactMarkdown>{universityDetails.admission_method}</ReactMarkdown>
             </div>
 
             <div className="university-scores">

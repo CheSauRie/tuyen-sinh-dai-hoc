@@ -6,8 +6,8 @@ import { format } from 'date-fns';
 import Select from 'react-select'
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faLink, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-
+import { faEdit, faLink, faTrashAlt, faEye } from '@fortawesome/free-solid-svg-icons';
+import * as XLSX from 'xlsx';
 const ConsultationManagement = () => {
     const [consultations, setConsultations] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -18,6 +18,7 @@ const ConsultationManagement = () => {
     const [universities, setUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [consultationById, setConsultationById] = useState([])
     const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
         const fetchConsultation = async () => {
@@ -36,13 +37,12 @@ const ConsultationManagement = () => {
         fetchConsultation();
     }, []);
 
-    const handleOpenModal = (scheduleId, type) => {
+    const handleOpenModal = async (scheduleId, type) => {
         setSelectedConsultation(scheduleId);
+        await fetchConsultationById(scheduleId)
         setShowModal(true);
-        // Thêm trạng thái để xác định loại modal
-        setModalType(type); // Bạn cần thêm state modalType
+        setModalType(type);
     };
-
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -168,7 +168,24 @@ const ConsultationManagement = () => {
             }
         }
     };
+    const fetchConsultationById = async (scheduleId) => {
+        try {
+            const response = await fetch(`${baseURL}api/v1/user/consultation-schedule-by-schedule-id/${scheduleId}`, {
+                method: 'GET',
+            });
 
+            if (response.ok) {
+                const data = await response.json()
+                setConsultationById(data)
+                console.log(data);
+            } else {
+                toast.error("Bị lỗi")
+            }
+        } catch (error) {
+            console.error("Error fetching schedule:", error);
+            alert("Error fetching schedule.");
+        }
+    };
     const filteredConsultations = searchTerm.length > 0
         ? consultations.filter(consultation =>
             consultation.uni_name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -177,7 +194,12 @@ const ConsultationManagement = () => {
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
-
+    const exportToExcel = () => {
+        const ws = XLSX.utils.json_to_sheet(consultationById);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Details");
+        XLSX.writeFile(wb, "detailData.xlsx");
+    };
     return (
         <div className="consultation-management">
             <h2 className="consultation-management__title">Quản Lý Tư vấn Online</h2>
@@ -227,7 +249,32 @@ const ConsultationManagement = () => {
                     </div>
                 </div>
             )}
-
+            {showModal && modalType === 'detail' && (
+                <div className="update-modal">
+                    <div className="update-modal-content">
+                        <span className="update-modal-close" onClick={handleCloseModal}>&times;</span>
+                        <button onClick={exportToExcel} >Xuất Excel</button>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tên người dùng</th>
+                                    <th>Email</th>
+                                    <th>Nội dung cần tư vấn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {consultationById.map((consultation, index) => (
+                                    <tr key={index}>
+                                        <td>{consultation.userName}</td>
+                                        <td>{consultation.userEmail}</td>
+                                        <td>{consultation.consultingInformation}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
             <button className="add-schedule-btn" onClick={handleAddSchedule}>Thêm Lịch</button>
             <div className="consultation-management__search">
                 <input
@@ -259,6 +306,9 @@ const ConsultationManagement = () => {
                                 </button>
                                 <button className="consultation-management__icon-btn" onClick={() => handleOpenModal(consultation.schedule_id, 'meet')}>
                                     <FontAwesomeIcon icon={faLink} title="Cập Nhật Link Meet" />
+                                </button>
+                                <button className="consultation-management__icon-btn" onClick={() => handleOpenModal(consultation.schedule_id, 'detail')}>
+                                    <FontAwesomeIcon icon={faEye} title="Xem Chi Tiết" />
                                 </button>
                                 <button className="consultation-management__icon-btn" onClick={() => handleDeleteSchedule(consultation.schedule_id)}>
                                     <FontAwesomeIcon icon={faTrashAlt} title="Xóa" />

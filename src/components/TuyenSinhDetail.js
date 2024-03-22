@@ -32,6 +32,7 @@ const TuyenSinhDetail = () => {
         replies: {} // là một object với key là parent_review_id và giá trị là một array của replies
     });
     const [showRepliesCount, setShowRepliesCount] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
     const baseURL = process.env.REACT_APP_BACKEND_URL;
     const handleShowMoreReplies = (parentId) => {
         setShowRepliesCount(prevState => ({
@@ -66,6 +67,7 @@ const TuyenSinhDetail = () => {
                 const response = await fetch(`${baseURL}api/v1/admin/universities/details/${uni_code}`);
                 if (response.ok) {
                     const data = await response.json();
+
                     // Cập nhật trạng thái với thông tin chi tiết của trường đại học
                     setUniversityData({
                         name: data.uni_name,
@@ -84,7 +86,7 @@ const TuyenSinhDetail = () => {
                             color: getRandomColor()
                         };
                     });
-
+                    setIsLoading(false);
                     setStatistics(parsedStatistics);
                     setInfoCards([
                         { title: 'Chỉ tiêu tuyển sinh', icon: '🎯', markdown: data.admissions_criteria },
@@ -559,9 +561,10 @@ const TuyenSinhDetail = () => {
                     </div>
                 </div>
             )}
-
-            <df-messenger intent="WELCOME" chat-title="Hệ thống tư vấn tuyển sinh" agent-id="b9d16e35-2a47-4d31-b5b8-8844913cf5d4"
-                language-code="en"></df-messenger>
+            {!isLoading && (
+                <df-messenger intent="WELCOME" chat-title={`${universityData.name}`} agent-id="b9d16e35-2a47-4d31-b5b8-8844913cf5d4"
+                    language-code="en">hello</df-messenger>
+            )}
         </div>
     );
 }

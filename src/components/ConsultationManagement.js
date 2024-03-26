@@ -177,7 +177,6 @@ const ConsultationManagement = () => {
             if (response.ok) {
                 const data = await response.json()
                 setConsultationById(data)
-                console.log(data);
             } else {
                 toast.error("Bị lỗi")
             }

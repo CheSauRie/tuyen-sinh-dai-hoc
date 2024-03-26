@@ -43,10 +43,9 @@ const StatisticsModal = ({ isOpen, onRequestClose, uniCode, majorCode }) => {
     };
     useEffect(() => {
         if (isOpen) {
-            fetch(`http://localhost:2000/api/v1/admin/score/${uniCode}/majors/${majorCode}/scores`)
+            fetch(`${process.env.REACT_APP_BACKEND_URL}api/v1/admin/score/${uniCode}/majors/${majorCode}/scores`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     const labels = [];
                     const scores = [];
 
@@ -59,7 +58,6 @@ const StatisticsModal = ({ isOpen, onRequestClose, uniCode, majorCode }) => {
                         const averageScore = yearlyData.reduce((acc, curr) => acc + parseFloat(curr.admission_score), 0) / yearlyData.length;
                         scores.push(averageScore);
                     }
-                    console.log(labels);
                     setChartData({
                         labels: labels,
                         datasets: [{

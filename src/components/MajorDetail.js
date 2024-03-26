@@ -35,7 +35,7 @@ const MajorDetail = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setUniversityData({
-                        logo: `${baseURL}${data.logo.replace(/\\/g, '/')}`
+                        logo: `${baseURL}${data.logo}`
                     });
                 } else {
                     console.error("Failed to fetch university details");

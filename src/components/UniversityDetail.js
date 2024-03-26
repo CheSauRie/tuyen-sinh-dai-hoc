@@ -46,7 +46,6 @@ const UniversityDetail = () => {
             const response = await fetch(`${baseURL}api/v1/admin/universities/details/${code}`);
             const data = await response.json();
             setUniversityDetails(data);
-            console.log(data);
         } catch (error) {
             console.error("Failed to fetch data: ", error);
         }

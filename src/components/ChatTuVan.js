@@ -216,6 +216,16 @@ const ChatTuVan = () => {
             toast.success("Xóa đoạn chat thành công!");
         }
     };
+
+    function linkify(text) {
+        const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+        return text.split(urlRegex).map((part, index) => {
+            if (part.match(urlRegex)) {
+                return <a key={index} href={part.startsWith('http') ? part : `http://${part}`} target="_blank" rel="noopener noreferrer">{part}</a>;
+            }
+            return part;
+        });
+    }
     return (
         <div className="chat-tuvan-container">
             <ToastContainer />
@@ -235,7 +245,7 @@ const ChatTuVan = () => {
                     {selectedChatDetails.map((detail) => (
                         <div key={detail.message_id} id={`chat_${detail.message_id}`} >
                             <p className={`chat-message-question ${highlightedQuestionId === detail.message_id ? 'highlighted-question' : ''}`}><strong>Bạn:</strong> {detail.question}</p>
-                            <p className="chat-message-answer"><strong>Phản hồi:</strong> {detail.isLoading ? <span className="loading-animation"></span> : detail.answer}</p>
+                            <p className="chat-message-answer"><strong>Phản hồi:</strong> {detail.isLoading ? <span className="loading-animation"></span> : linkify(detail.answer)}</p>
                         </div>
                     ))}
 

@@ -3,6 +3,7 @@ import '../css/ChatTuVan.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import Linkify from 'react-linkify';
 const ChatTuVan = () => {
     const [question, setQuestion] = useState('');
     const [selectedChatId, setSelectedChatId] = useState(null);
@@ -218,6 +219,9 @@ const ChatTuVan = () => {
     };
 
     function linkify(text) {
+        // Kiểm tra nếu text là undefined hoặc null thì trả về một chuỗi rỗng hoặc giá trị mặc định
+        if (!text) return '';
+
         const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
         return text.split(urlRegex).map((part, index) => {
             if (part.match(urlRegex)) {
@@ -226,6 +230,11 @@ const ChatTuVan = () => {
             return part;
         });
     }
+    const linkDecorator = (href, text, key) => (
+        <a href={href} key={key} target="_blank" rel="noopener noreferrer">
+            {text}
+        </a>
+    );
     return (
         <div className="chat-tuvan-container">
             <ToastContainer />
@@ -245,7 +254,7 @@ const ChatTuVan = () => {
                     {selectedChatDetails.map((detail) => (
                         <div key={detail.message_id} id={`chat_${detail.message_id}`} >
                             <p className={`chat-message-question ${highlightedQuestionId === detail.message_id ? 'highlighted-question' : ''}`}><strong>Bạn:</strong> {detail.question}</p>
-                            <p className="chat-message-answer"><strong>Phản hồi:</strong> {detail.isLoading ? <span className="loading-animation"></span> : linkify(detail.answer)}</p>
+                            <p className="chat-message-answer"><strong>Phản hồi:</strong> <Linkify componentDecorator={linkDecorator}>{detail.isLoading ? <span className="loading-animation"></span> : detail.answer}</Linkify></p>
                         </div>
                     ))}
 

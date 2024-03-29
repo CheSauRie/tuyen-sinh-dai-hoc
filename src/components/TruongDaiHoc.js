@@ -189,7 +189,7 @@ const TruongDaiHoc = () => {
                 </select>
                 <select onChange={handleMajorChange} className="filter-dropdown">
                     <option value="">Ngành</option>
-                    <option value="Kỹ thuật máy tính">Kỹ thuật máy tính</option>
+                    <option value="Kỹ thuật Máy tính">Kỹ thuật Máy tính</option>
                     <option value="Công nghệ thông tin">Công nghệ thông tin</option>
                 </select>
             </div>

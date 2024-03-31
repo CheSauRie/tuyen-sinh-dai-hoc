@@ -218,23 +218,79 @@ const ChatTuVan = () => {
         }
     };
 
-    function linkify(text) {
-        // Kiểm tra nếu text là undefined hoặc null thì trả về một chuỗi rỗng hoặc giá trị mặc định
-        if (!text) return '';
-
-        const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-        return text.split(urlRegex).map((part, index) => {
-            if (part.match(urlRegex)) {
-                return <a key={index} href={part.startsWith('http') ? part : `http://${part}`} target="_blank" rel="noopener noreferrer">{part}</a>;
-            }
-            return part;
-        });
-    }
     const linkDecorator = (href, text, key) => (
         <a href={href} key={key} target="_blank" rel="noopener noreferrer">
             {text}
         </a>
     );
+
+    function formatReferencesAndRelatedQuestions(text) {
+        // Tìm vị trí của các phần quan trọng trong văn bản
+        const relatedQuestionsIndex = text.indexOf("[Related Questions:]");
+        const referencesIndex = text.indexOf("[Nguồn tham khảo:]");
+
+        // Lấy phần văn bản trước "[Related Questions:]" (hoặc toàn bộ văn bản nếu không tìm thấy)
+        const mainText = text.substring(0, relatedQuestionsIndex !== -1 ? relatedQuestionsIndex : referencesIndex !== -1 ? referencesIndex : text.length);
+
+        // Phần "Câu hỏi liên quan" và "Nguồn tham khảo"
+        let relatedQuestionsText = "";
+        let referencesText = "";
+
+        if (relatedQuestionsIndex !== -1) {
+            relatedQuestionsText = text.substring(relatedQuestionsIndex, referencesIndex !== -1 ? referencesIndex : text.length);
+        }
+
+        if (referencesIndex !== -1) {
+            referencesText = text.substring(referencesIndex);
+        }
+
+        // Xử lý và format "Câu hỏi liên quan"
+        const relatedQuestions = relatedQuestionsText.split(/\d\./).slice(1).map(q => q.trim());
+        const formattedRelatedQuestions = relatedQuestions.map((question, index) => (
+            <li key={`rq-${index}`}
+                onClick={() => setQuestion(question)} // Khi nhấp vào, đặt câu hỏi vào ô input
+                style={{ cursor: 'pointer' }}> {/* Tùy chỉnh style cho đẹp mắt */}
+                {question}
+            </li>
+        ));
+
+        // Xử lý và format "Nguồn tham khảo"
+        const references = [];
+        const referenceRegex = /(\d+)\.\s(.*?)(https?:\/\/[^\s]+)/g;
+        let match;
+        while ((match = referenceRegex.exec(referencesText)) !== null) {
+            references.push({
+                id: match[1],
+                title: match[2],
+                url: match[3]
+            });
+        }
+
+        const formattedReferences = references.map((ref, index) => (
+            <li key={`ref-${index}`}><a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a></li>
+        ));
+
+        return (
+            <div>
+                <p>{mainText}</p>
+                {formattedRelatedQuestions.length > 0 && (
+                    <div>
+                        <h3>Câu hỏi liên quan:</h3>
+                        <ul>{formattedRelatedQuestions}</ul>
+                    </div>
+                )}
+                {formattedReferences.length > 0 && (
+                    <div>
+                        <h3>Nguồn tham khảo:</h3>
+                        <ul>{formattedReferences}</ul>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+
+
     return (
         <div className="chat-tuvan-container">
             <ToastContainer />
@@ -254,7 +310,7 @@ const ChatTuVan = () => {
                     {selectedChatDetails.map((detail) => (
                         <div key={detail.message_id} id={`chat_${detail.message_id}`} >
                             <p className={`chat-message-question ${highlightedQuestionId === detail.message_id ? 'highlighted-question' : ''}`}><strong>Bạn:</strong> {detail.question}</p>
-                            <p className="chat-message-answer"><strong>Phản hồi:</strong> <Linkify componentDecorator={linkDecorator}>{detail.isLoading ? <span className="loading-animation"></span> : detail.answer}</Linkify></p>
+                            <p className="chat-message-answer"><strong>Phản hồi:</strong> <Linkify componentDecorator={linkDecorator}>{detail.isLoading ? <span className="loading-animation"></span> : formatReferencesAndRelatedQuestions(detail.answer)}</Linkify></p>
                         </div>
                     ))}
 
@@ -265,6 +321,7 @@ const ChatTuVan = () => {
                         placeholder="Nhập câu hỏi của bạn..."
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSendQuestion()}
                     />
                     <button onClick={handleSendQuestion}>Gửi</button>
                 </div>

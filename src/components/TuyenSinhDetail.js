@@ -204,8 +204,11 @@ const TuyenSinhDetail = () => {
                 },
                 body: JSON.stringify(reviewInfo)
             });
+
             if (!response.ok) {
-                throw new Error('Có lỗi xảy ra khi gửi đánh giá.');
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message || 'Có lỗi xảy ra khi đánh giá.');
+
             }
 
             fetchReviews();
@@ -241,7 +244,9 @@ const TuyenSinhDetail = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Lỗi khi gửi thông tin tư vấn.');
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message || 'Có lỗi xảy ra khi gửi tư vấn.');
+
             }
 
             alert('Đăng ký tư vấn thành công!');
@@ -538,7 +543,6 @@ const TuyenSinhDetail = () => {
                                 value={reviewInfo.major_id}
                                 onChange={(e) => {
                                     const newMajorId = e.target.value;
-                                    console.log(e.target.value);
                                     setReviewInfo(current => {
                                         const updated = { ...current, major_id: newMajorId };
                                         return updated;

@@ -54,7 +54,7 @@ const TuyenSinhDetail = () => {
         user_email: '',
         user_phone: ''
     });
-    function getRandomColor() {
+    const getRandomColor = () => {
         const colors = ['#ff6384', '#36a2eb', '#cc65fe', '#ffcd56'];
         return colors[Math.floor(Math.random() * colors.length)];
     }

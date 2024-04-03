@@ -224,7 +224,7 @@ const ChatTuVan = () => {
         </a>
     );
 
-    function formatReferencesAndRelatedQuestions(text) {
+    const formatReferencesAndRelatedQuestions = (text) => {
         if (typeof text !== 'string') {
             console.error('Giá trị được cung cấp cho formatReferencesAndRelatedQuestions không phải là chuỗi.');
             return { relatedQuestions: '', references: '' };

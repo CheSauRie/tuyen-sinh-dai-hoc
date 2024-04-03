@@ -293,7 +293,10 @@ const ChatTuVan = () => {
         );
     }
 
-
+    const ReferencesAndQuestions = ({ text }) => {
+        // Gọi hàm và trả về JSX
+        return formatReferencesAndRelatedQuestions(text);
+    };
 
     return (
         <div className="chat-tuvan-container">
@@ -314,7 +317,11 @@ const ChatTuVan = () => {
                     {selectedChatDetails.map((detail) => (
                         <div key={detail.message_id} id={`chat_${detail.message_id}`} >
                             <p className={`chat-message-question ${highlightedQuestionId === detail.message_id ? 'highlighted-question' : ''}`}><strong>Bạn:</strong> {detail.question}</p>
-                            <p className="chat-message-answer"><strong>Phản hồi:</strong> <Linkify componentDecorator={linkDecorator}>{detail.isLoading ? <span className="loading-animation"></span> : formatReferencesAndRelatedQuestions(detail.answer)}</Linkify></p>
+                            <p className="chat-message-answer">
+                                <strong>Phản hồi:</strong>
+                                <Linkify componentDecorator={linkDecorator}>
+                                    {detail.isLoading ? <span className="loading-animation"></span> : <ReferencesAndQuestions text={detail.answer} />}
+                                </Linkify></p>
                         </div>
                     ))}
 

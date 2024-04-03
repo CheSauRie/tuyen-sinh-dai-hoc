@@ -225,6 +225,10 @@ const ChatTuVan = () => {
     );
 
     function formatReferencesAndRelatedQuestions(text) {
+        if (typeof text !== 'string') {
+            console.error('Giá trị được cung cấp cho formatReferencesAndRelatedQuestions không phải là chuỗi.');
+            return { relatedQuestions: '', references: '' };
+        }
         // Tìm vị trí của các phần quan trọng trong văn bản
         const relatedQuestionsIndex = text.indexOf("[Related Questions:]");
         const referencesIndex = text.indexOf("[Nguồn tham khảo:]");

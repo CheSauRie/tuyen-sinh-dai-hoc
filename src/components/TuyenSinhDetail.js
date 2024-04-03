@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
-
+import ContentDisplay from '../helper/ContentDisplay';
 const TuyenSinhDetail = () => {
     const { uni_code } = useParams();
     const [showModal, setShowModal] = useState(false);
@@ -417,8 +417,8 @@ const TuyenSinhDetail = () => {
 
             {/* Phần 5: Giới thiệu trường học */}
             <div className="introduction-section">
-                <h3>Giới thiệu trường</h3>
-                <ReactMarkdown>{mission}</ReactMarkdown>
+                {/* <h3>Giới thiệu trường</h3> */}
+                <ContentDisplay content={mission} />
                 <div className="info-cards-container">
                     {infoCards.map((card, index) => (
                         <div key={index} className="info-card" onClick={() => { handleCardClick(card) }}>
@@ -433,7 +433,9 @@ const TuyenSinhDetail = () => {
                         <div className="modal-content">
                             <span className="close-button" onClick={closeModal}>&times;</span>
                             <h4>{selectedCard.title}</h4>
-                            <ReactMarkdown>{selectedCard.markdown}</ReactMarkdown>
+                            {/* <ReactMarkdown>{selectedCard.markdown}</ReactMarkdown> */}
+                            {/* <div dangerouslySetInnerHTML={{ __html: selectedCard.markdown }}></div> */}
+                            <ContentDisplay content={selectedCard.markdown} />
                         </div>
                     </div>
                 )}

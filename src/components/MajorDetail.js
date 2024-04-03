@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import '../css/MajorDetail.css';
-
+import ContentDisplay from '../helper/ContentDisplay';
 const MajorDetail = () => {
     const { uni_code, major_name } = useParams();
     const [majorDetails, setMajorDetails] = useState(null);
@@ -86,12 +86,21 @@ const MajorDetail = () => {
 
             <div className="row content">
                 <div className="major-details">
-                    <h4>Thông tin tuyển sinh</h4>
-                    <ReactMarkdown>{majorDetails.admissions_information}</ReactMarkdown>
-                    <h4>Phương thức tuyển sinh</h4>
-                    <ReactMarkdown>{majorDetails.admissions_method}</ReactMarkdown>
-                    <h4>Mô tả ngành</h4>
-                    <ReactMarkdown>{majorDetails.description_major}</ReactMarkdown>
+                    {majorDetails.description_major && (
+                        <>
+                            <h4>Thông tin tuyển sinh</h4>
+                            <ContentDisplay content={majorDetails.admissions_information} />
+                        </>
+                    )}
+
+                    <ContentDisplay content={majorDetails.admissions_method} />
+
+                    {majorDetails.description_major && (
+                        <>
+                            <h4>Mô tả ngành</h4>
+                            <ContentDisplay content={majorDetails.description_major} />
+                        </>
+                    )}
                 </div>
                 <div className="other-majors">
                     <h4>Các Ngành Khác</h4>

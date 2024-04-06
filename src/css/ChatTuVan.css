@@ -152,6 +152,35 @@
     background-size: cover;
 }
 
+.scroll-to-bottom-btn {
+    position: absolute; /* Absolute positioning */
+    left: 50%; /* Center the button horizontally */
+    bottom: 80px; /* Position the button from the bottom */
+    transform: translateX(-50%); /* Shift the button back to the left by half its width to truly center it */
+    /* Additional styles for the button */
+    padding: 5px 10px; /* Example padding */
+    cursor: pointer; /* Changes the cursor to a pointer when hovered over the button */
+    background-color: white; /* Example background color */
+    color: black; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Example font size */
+    z-index: 10; /* Ensure the button is above other content */
+}
+
+/* If you want the button to have a transition effect when it appears and disappears */
+.scroll-to-bottom-btn {
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+/* When you want to hide the button, you can toggle these properties in your JavaScript */
+.scroll-to-bottom-btn.hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
 /* Các styles bổ sung cho responsive và */
 
 @media (max-width: 768px) {

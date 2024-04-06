@@ -15,6 +15,8 @@ const ChatTuVan = () => {
     const [highlightedQuestionId, setHighlightedQuestionId] = useState(null);
     const [highlightTimeoutId, setHighlightTimeoutId] = useState(null);
     const baseURL = process.env.REACT_APP_BACKEND_URL;
+    const [showScrollButton, setShowScrollButton] = useState(false);
+
     useEffect(() => {
         const fetchChats = async () => {
             const token = localStorage.getItem('token'); // Lấy token
@@ -51,6 +53,34 @@ const ChatTuVan = () => {
             }
         };
     }, [highlightTimeoutId]);
+
+    const checkScrollPosition = () => {
+        const chatWindow = document.querySelector('.chat-window');
+        const scrollTop = chatWindow.scrollTop;
+        const scrollHeight = chatWindow.scrollHeight;
+        const clientHeight = chatWindow.clientHeight;
+
+        const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+        setShowScrollButton(!atBottom);
+    };
+    const scrollToBottom = (e) => {
+        e.stopPropagation()
+        const chatWindow = document.querySelector('.chat-window');
+        chatWindow.scrollTo({
+            top: chatWindow.scrollHeight,
+            behavior: 'smooth'
+        });
+    };
+
+    useEffect(() => {
+        const chatWindow = document.querySelector('.chat-window');
+        chatWindow.addEventListener('scroll', checkScrollPosition);
+        checkScrollPosition();
+        return () => {
+            chatWindow.removeEventListener('scroll', checkScrollPosition);
+        };
+    }, []);
     // Hàm lấy chi tiết của 1 đoạn chat
     const fetchChatDetails = async (chatId) => {
         try {
@@ -107,18 +137,35 @@ const ChatTuVan = () => {
     };
 
     const handleServerResponse = (responseData) => {
-        setSelectedChatDetails(prevDetails =>
-            prevDetails.map(detail =>
-                detail.tempId === responseData.tempId ? {
-                    ...detail,
-                    id: responseData.message_id, // Cập nhật ID thực từ server
-                    answer: responseData.answer, // Cập nhật câu trả lời
-                    isLoading: false, // Đánh dấu đã nhận phản hồi
-                    tempId: undefined // Xóa tempId
-                } : detail
-            ).filter(detail => detail.tempId === undefined || detail.id) // Loại bỏ entry tạm thời nếu cần
-        );
+        // Kiểm tra nếu phản hồi có trạng thái lỗi
+        if (responseData.error) {
+            setSelectedChatDetails(prevDetails =>
+                prevDetails.map(detail =>
+                    detail.tempId === responseData.tempId ? {
+                        ...detail,
+                        answer: "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.",
+                        isLoading: false,
+                        isError: true, // Đánh dấu là có lỗi
+                        tempId: undefined
+                    } : detail
+                )
+            );
+        } else {
+            // Xử lý như bình thường nếu không có lỗi
+            setSelectedChatDetails(prevDetails =>
+                prevDetails.map(detail =>
+                    detail.tempId === responseData.tempId ? {
+                        ...detail,
+                        id: responseData.message_id,
+                        answer: responseData.answer,
+                        isLoading: false,
+                        tempId: undefined
+                    } : detail
+                ).filter(detail => detail.tempId === undefined || detail.id)
+            );
+        }
     };
+
 
     const handleSendQuestion = async () => {
         if (!question.trim()) return;
@@ -229,14 +276,20 @@ const ChatTuVan = () => {
             console.error('Giá trị được cung cấp cho formatReferencesAndRelatedQuestions không phải là chuỗi.');
             return { relatedQuestions: '', references: '' };
         }
-        // Tìm vị trí của các phần quan trọng trong văn bản
-        const relatedQuestionsIndex = text.indexOf("[Related Questions:]");
-        const referencesIndex = text.indexOf("[Nguồn tham khảo:]");
 
-        // Lấy phần văn bản trước "[Related Questions:]" (hoặc toàn bộ văn bản nếu không tìm thấy)
+        // Sử dụng Regex để tìm kiếm linh hoạt với hoặc không có dấu ngoặc vuông
+        const relatedQuestionsRegex = /\[?Related Questions:\]?/;
+        const referencesRegex = /\[?Nguồn tham khảo:\]?/;
+
+        const relatedQuestionsMatch = text.match(relatedQuestionsRegex);
+        const referencesMatch = text.match(referencesRegex);
+
+        const relatedQuestionsIndex = relatedQuestionsMatch ? text.indexOf(relatedQuestionsMatch[0]) : -1;
+        const referencesIndex = referencesMatch ? text.indexOf(referencesMatch[0]) : -1;
+
+        // Lấy phần văn bản trước "Related Questions:" hoặc "Nguồn tham khảo:"
         const mainText = text.substring(0, relatedQuestionsIndex !== -1 ? relatedQuestionsIndex : referencesIndex !== -1 ? referencesIndex : text.length);
 
-        // Phần "Câu hỏi liên quan" và "Nguồn tham khảo"
         let relatedQuestionsText = "";
         let referencesText = "";
 
@@ -291,7 +344,7 @@ const ChatTuVan = () => {
                 )}
             </div>
         );
-    }
+    };
 
     const ReferencesAndQuestions = ({ text }) => {
         // Gọi hàm và trả về JSX
@@ -319,13 +372,25 @@ const ChatTuVan = () => {
                             <p className={`chat-message-question ${highlightedQuestionId === detail.message_id ? 'highlighted-question' : ''}`}><strong>Bạn:</strong> {detail.question}</p>
                             <p className="chat-message-answer">
                                 <strong>Phản hồi:</strong>
-                                <Linkify componentDecorator={linkDecorator}>
-                                    {detail.isLoading ? <span className="loading-animation"></span> : <ReferencesAndQuestions text={detail.answer} />}
-                                </Linkify></p>
+                                {detail.isLoading ? (
+                                    <span className="loading-animation"></span>
+                                ) : detail.isError ? (
+                                    // Hiển thị thông báo lỗi với style tùy chỉnh nếu cần
+                                    <span className="error-message">{detail.answer}</span>
+                                ) : (
+                                    <Linkify componentDecorator={linkDecorator}>
+                                        <ReferencesAndQuestions text={detail.answer} />
+                                    </Linkify>
+                                )}
+                            </p>
                         </div>
                     ))}
-
                 </div>
+                {showScrollButton && (
+                    <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
+                        ↓
+                    </button>
+                )}
                 <div className="chat-input">
                     <input
                         type="text"

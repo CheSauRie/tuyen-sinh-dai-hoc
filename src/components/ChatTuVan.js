@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import Linkify from 'react-linkify';
+
 const ChatTuVan = () => {
     const [question, setQuestion] = useState('');
     const [selectedChatId, setSelectedChatId] = useState(null);
@@ -34,6 +35,7 @@ const ChatTuVan = () => {
                 }
 
                 const data = await response.json();
+                data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setChatSummary(data); // Lưu data vào cột bên trái
             } catch (error) {
                 console.error('Error fetching chat summary:', error);
@@ -173,6 +175,9 @@ const ChatTuVan = () => {
         let currentChatId = selectedChatId;
         const tempId = Date.now();
         setSelectedChatDetails(prev => [...prev, { tempId, question, answer: 'Đang chờ phản hồi...', isLoading: true }]);
+        const timeoutId = setTimeout(() => {
+            toast.info('Vui lòng đợi trong giây lát...');
+        }, 30000);
         if (isNewChat) {
             try {
                 const response = await fetch(`${baseURL}api/v1/chat/create-chat`, {
@@ -192,6 +197,7 @@ const ChatTuVan = () => {
                 }]);
                 setIsNewChat(false);
                 setQuestion('');
+                clearTimeout(timeoutId);
             } catch (error) {
                 console.error('Lỗi khi tạo chat mới:', error);
                 return;
@@ -216,6 +222,7 @@ const ChatTuVan = () => {
                         summary: responseData.summary,
                     }]);
                     setQuestion('');
+                    clearTimeout(timeoutId);
                 } else {
                     console.error('Lỗi khi gửi câu hỏi:', responseData.message);
                 }
@@ -224,6 +231,7 @@ const ChatTuVan = () => {
             }
         }
         setQuestion('');
+        clearTimeout(timeoutId);
     };
 
     const handleQuestionClick = (messageId) => {

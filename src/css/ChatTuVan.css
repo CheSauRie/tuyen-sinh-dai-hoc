@@ -73,6 +73,32 @@
 }
 
 /* ...giữ nguyên phần loading-animation và @keyframes ellipsis... */
+.fixed-button-container {
+    position: fixed; /* Fix position relative to the viewport */
+    top: 0; /* Align top */
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it stays on top of other content */
+    background-color: white; /* Optional: background to make text readable on overlap */
+    padding: 10px 0; /* Some padding for aesthetics */
+    border-bottom: 1px solid #ccc; /* Optional: a border to distinguish it from content below */
+}
+
+.add-chat-btn-container {
+    position: fixed; /* Fix the position relative to the viewport */
+    top: 0; /* Position it at the top of the viewport */
+    left: 0; /* Position it to start from the left edge of the viewport */
+    width: 10%; /* Stretch across the full width of the viewport */
+    top: 69px;
+    background-color: #fff; /* Match the background to your header's background */
+    z-index: 1000; /* Ensure it's layered above other elements */
+    padding: 10px 20px; /* Add some spacing around the content */
+    /* Optional: add shadow for better separation */
+}
+
+/* Adjust the .chat-summary's top padding or margin to prevent it from hiding behind the fixed header */
+.chat-summary {
+    padding-top: 70px; /* Adjust this value based on the actual height of the fixed header */
+}
 
 .add-chat-btn {
     display: block; /* Để button chiếm toàn bộ chiều rộng */

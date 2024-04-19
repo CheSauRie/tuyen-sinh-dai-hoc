@@ -363,7 +363,9 @@ const ChatTuVan = () => {
         <div className="chat-tuvan-container">
             <ToastContainer />
             <div className="chat-summary">
-                <button className="add-chat-btn" onClick={handleAddChat}>Thêm Chat</button>
+                <div className="add-chat-btn-container">
+                    <button className="add-chat-btn" onClick={handleAddChat}>Thêm Chat</button>
+                </div>
                 {chatSummary.map((chat) => (
                     <div key={chat.chat_id} className="chat-item" onClick={() => fetchChatDetails(chat.chat_id)}>
                         <p>{chat.summary}</p>

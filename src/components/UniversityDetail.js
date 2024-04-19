@@ -4,6 +4,7 @@ import '../css/UniversityDetail.css';
 import UET from "../img/UET.png";
 import StatisticsModal from '../Modal/StatisticsModal';
 import ReactMarkdown from 'react-markdown';
+import ContentDisplay from '../helper/ContentDisplay';
 const UniversityDetail = () => {
     const { code } = useParams();
     const [admissionScores, setAdmissionScores] = useState([]);
@@ -79,7 +80,8 @@ const UniversityDetail = () => {
 
             <div className="university-admission">
                 <h2>Phương Thức Tuyển Sinh 2023</h2>
-                <ReactMarkdown>{universityDetails.admission_method}</ReactMarkdown>
+                {/* <ReactMarkdown>{universityDetails.admission_method}</ReactMarkdown> */}
+                <ContentDisplay content={universityDetails.admission_method} />
             </div>
 
             <div className="university-scores">

@@ -194,7 +194,7 @@ const ChatTuVan = () => {
                     chat_id: newChat.chat_id,
                     summary: newChat.summary,
                     createdAt: new Date().toISOString()
-                }]);
+                }].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
                 setIsNewChat(false);
                 setQuestion('');
                 clearTimeout(timeoutId);

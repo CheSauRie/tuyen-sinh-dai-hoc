@@ -567,10 +567,10 @@ const TuyenSinhDetail = () => {
                     </div>
                 </div>
             )}
-            {!isLoading && (
+            {/* {!isLoading && (
                 <df-messenger intent="WELCOME" chat-title={`${universityData.name}`} agent-id="b9d16e35-2a47-4d31-b5b8-8844913cf5d4"
                     language-code="en">hello</df-messenger>
-            )}
+            )} */}
         </div>
     );
 }

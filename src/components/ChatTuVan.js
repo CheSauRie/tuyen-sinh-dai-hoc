@@ -358,7 +358,11 @@ const ChatTuVan = () => {
         // Gọi hàm và trả về JSX
         return formatReferencesAndRelatedQuestions(text);
     };
-
+    const formatText = (text) => {
+        return text.split('\n').map((line, index) => (
+            <p key={index}>{line}</p>
+        ));
+    };
     return (
         <div className="chat-tuvan-container">
             <ToastContainer />
@@ -386,11 +390,9 @@ const ChatTuVan = () => {
                                     <span className="loading-animation"></span>
                                 ) : detail.isError ? (
                                     // Hiển thị thông báo lỗi với style tùy chỉnh nếu cần
-                                    <span className="error-message">{detail.answer}</span>
+                                    <span className="error-message"><pre>{detail.answer}</pre></span>
                                 ) : (
-                                    <Linkify componentDecorator={linkDecorator}>
-                                        <ReferencesAndQuestions text={detail.answer} />
-                                    </Linkify>
+                                    <p>{formatText(detail.answer)}</p>
                                 )}
                             </p>
                         </div>

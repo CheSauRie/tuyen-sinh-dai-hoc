@@ -3,7 +3,6 @@ import '../css/ChatTuVan.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import Linkify from 'react-linkify';
 
 const ChatTuVan = () => {
     const [question, setQuestion] = useState('');
@@ -66,6 +65,7 @@ const ChatTuVan = () => {
 
         setShowScrollButton(!atBottom);
     };
+
     const scrollToBottom = (e) => {
         e.stopPropagation()
         const chatWindow = document.querySelector('.chat-window');
@@ -168,7 +168,6 @@ const ChatTuVan = () => {
         }
     };
 
-
     const handleSendQuestion = async () => {
         if (!question.trim()) return;
 
@@ -190,6 +189,7 @@ const ChatTuVan = () => {
                 });
                 const newChat = await response.json();
                 currentChatId = newChat.chat_id;
+                setSelectedChatId(newChat.chat_id);
                 setChatSummary(prevChats => [...prevChats, {
                     chat_id: newChat.chat_id,
                     summary: newChat.summary,
@@ -273,91 +273,7 @@ const ChatTuVan = () => {
         }
     };
 
-    const linkDecorator = (href, text, key) => (
-        <a href={href} key={key} target="_blank" rel="noopener noreferrer">
-            {text}
-        </a>
-    );
 
-    const formatReferencesAndRelatedQuestions = (text) => {
-        if (typeof text !== 'string') {
-            console.error('Giá trị được cung cấp cho formatReferencesAndRelatedQuestions không phải là chuỗi.');
-            return { relatedQuestions: '', references: '' };
-        }
-
-        // Sử dụng Regex để tìm kiếm linh hoạt với hoặc không có dấu ngoặc vuông
-        const relatedQuestionsRegex = /\[?Related Questions:\]?/;
-        const referencesRegex = /\[?Nguồn tham khảo:\]?/;
-
-        const relatedQuestionsMatch = text.match(relatedQuestionsRegex);
-        const referencesMatch = text.match(referencesRegex);
-
-        const relatedQuestionsIndex = relatedQuestionsMatch ? text.indexOf(relatedQuestionsMatch[0]) : -1;
-        const referencesIndex = referencesMatch ? text.indexOf(referencesMatch[0]) : -1;
-
-        // Lấy phần văn bản trước "Related Questions:" hoặc "Nguồn tham khảo:"
-        const mainText = text.substring(0, relatedQuestionsIndex !== -1 ? relatedQuestionsIndex : referencesIndex !== -1 ? referencesIndex : text.length);
-
-        let relatedQuestionsText = "";
-        let referencesText = "";
-
-        if (relatedQuestionsIndex !== -1) {
-            relatedQuestionsText = text.substring(relatedQuestionsIndex, referencesIndex !== -1 ? referencesIndex : text.length);
-        }
-
-        if (referencesIndex !== -1) {
-            referencesText = text.substring(referencesIndex);
-        }
-
-        // Xử lý và format "Câu hỏi liên quan"
-        const relatedQuestions = relatedQuestionsText.split(/\d\./).slice(1).map(q => q.trim());
-        const formattedRelatedQuestions = relatedQuestions.map((question, index) => (
-            <li key={`rq-${index}`}
-                onClick={() => setQuestion(question)} // Khi nhấp vào, đặt câu hỏi vào ô input
-                style={{ cursor: 'pointer' }}> {/* Tùy chỉnh style cho đẹp mắt */}
-                {question}
-            </li>
-        ));
-
-        // Xử lý và format "Nguồn tham khảo"
-        const references = [];
-        const referenceRegex = /(\d+)\.\s(.*?)(https?:\/\/[^\s]+)/g;
-        let match;
-        while ((match = referenceRegex.exec(referencesText)) !== null) {
-            references.push({
-                id: match[1],
-                title: match[2],
-                url: match[3]
-            });
-        }
-
-        const formattedReferences = references.map((ref, index) => (
-            <li key={`ref-${index}`}><a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a></li>
-        ));
-
-        return (
-            <div>
-                <p>{mainText}</p>
-                {formattedRelatedQuestions.length > 0 && (
-                    <div>
-                        <h3>Câu hỏi liên quan:</h3>
-                        <ul>{formattedRelatedQuestions}</ul>
-                    </div>
-                )}
-                {formattedReferences.length > 0 && (
-                    <div>
-                        <h3>Nguồn tham khảo:</h3>
-                        <ul>{formattedReferences}</ul>
-                    </div>
-                )}
-            </div>
-        );
-    };
-
-    const ReferencesAndQuestions = ({ text }) => {
-        // Gọi hàm và trả về JSX
-        return formatReferencesAndRelatedQuestions(text);
-    };
     const formatText = (text) => {
         return text.split('\n').map((line, index) => (
             <p key={index}>{line}</p>

@@ -11,23 +11,33 @@ const TruongDaiHoc = () => {
     const [followedUniversities, setFollowedUniversities] = useState(new Set());
     const baseURL = process.env.REACT_APP_BACKEND_URL;
     useEffect(() => {
-        // Hàm lấy danh sách trường đại học từ API
         const fetchUniversities = async () => {
-            try {
-                const response = await fetch(`${baseURL}api/v1/admin/universities`);
-                if (response.ok) {
-                    const data = await response.json();
-                    const universitiesWithImages = await Promise.all(data.universities.map(async (uni) => {
-                        const imgResponse = await fetch(`${baseURL}api/v1/admin/universities/images/${uni.uni_id}`);
-                        const imgData = await imgResponse.json();
-                        return { ...uni, ...imgData };
-                    }));
-                    setUniversities(universitiesWithImages);
-                } else {
-                    console.error("Failed to fetch universities");
+            const cachedData = localStorage.getItem('universitiesData');
+            const lastFetchedTime = localStorage.getItem('lastFetchedTime');
+            const currentTime = new Date().getTime();
+
+            // Kiểm tra xem cache còn hợp lệ không, ví dụ: cache hết hạn sau 24 giờ
+            if (cachedData && lastFetchedTime && currentTime - lastFetchedTime < 24 * 60 * 60 * 1000) {
+                setUniversities(JSON.parse(cachedData));
+            } else {
+                try {
+                    const response = await fetch(`${baseURL}api/v1/admin/universities`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        const universitiesWithImages = await Promise.all(data.universities.map(async (uni) => {
+                            const imgResponse = await fetch(`${baseURL}api/v1/admin/universities/images/${uni.uni_id}`);
+                            const imgData = await imgResponse.json();
+                            return { ...uni, ...imgData };
+                        }));
+                        setUniversities(universitiesWithImages);
+                        localStorage.setItem('universitiesData', JSON.stringify(universitiesWithImages));
+                        localStorage.setItem('lastFetchedTime', currentTime.toString());
+                    } else {
+                        console.error("Failed to fetch universities");
+                    }
+                } catch (error) {
+                    console.error("Error fetching universities: ", error);
                 }
-            } catch (error) {
-                console.error("Error fetching universities: ", error);
             }
         };
 
@@ -186,11 +196,15 @@ const TruongDaiHoc = () => {
                     <option value="">Địa điểm</option>
                     <option value="Hà Nội">Hà Nội</option>
                     <option value="Quảng Ninh">Quảng Ninh</option>
+                    <option value="Hải Phòng">Hải Phòng</option>
+                    <option value="Thái Nguyên">Thái Nguyên</option>
                 </select>
                 <select onChange={handleMajorChange} className="filter-dropdown">
                     <option value="">Ngành</option>
-                    <option value="Kỹ thuật Máy tính">Kỹ thuật máy tính</option>
+                    <option value="Kỹ thuật máy tính">Kỹ thuật máy tính</option>
                     <option value="Công nghệ thông tin">Công nghệ thông tin</option>
+                    <option value="Quản trị kinh doanh">Quản trị kinh doanh</option>
+                    <option value="Ngôn ngữ Anh">Ngôn ngữ anh</option>
                 </select>
             </div>
             <div className="university-list">
